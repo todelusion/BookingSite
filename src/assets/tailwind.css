@@ -1,0 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Noto+Sans+TC:wght@100;300;400;500;700;900&family=Noto+Serif+TC:wght@200;300;400;500;600;700;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* 
+@layer base {
+  body {
+    @apply box-border bg-white;
+  }
+  input {
+    @apply outline-none;
+  }
+  button {
+    @apply outline-none;
+  }
+} */
+
+/* @layer components {
+  .custom-CSS {
+    @apply relative z-0 block;
+  }
+} */
