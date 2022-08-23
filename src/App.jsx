@@ -1,13 +1,12 @@
-import "./styles.css";
-import DatePicker from "./DatePicker";
+import DatePicker from "./datepicker/DatePicker";
 
 const onChange = (time) => {
   console.log(time);
 };
 
-export default function DatepickerNoRrange() {
+export default function App() {
   return (
-    <div className="App">
+    <div className="flex justify-center mt-20">
       <DatePicker onChange={onChange} arrowYear="block" />
     </div>
   );

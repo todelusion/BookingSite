@@ -9,6 +9,7 @@ import {
   faAnglesLeft,
 } from "@fortawesome/free-solid-svg-icons";
 
+
 const DatePicker = ({ onChange, arrowYear }) => {
   const inputRef = createRef();
   const daysMap = [
@@ -21,18 +22,18 @@ const DatePicker = ({ onChange, arrowYear }) => {
     "Saturday",
   ];
   const monthMap = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
   ];
 
   const getNumberOfDays = (year, month) => {
@@ -103,7 +104,6 @@ const DatePicker = ({ onChange, arrowYear }) => {
     selectedDay: todayTimestamp,
     monthDetails: getMonthDetails(year, month),
   });
-
   const showDatePicker = () => {
     setDetails({ ...details, showDatePicker: !details.showDatePicker });
   };
@@ -116,6 +116,7 @@ const DatePicker = ({ onChange, arrowYear }) => {
     return day.timestamp === details.selectedDay;
   };
 
+  //month_number to month_string
   const getMonthStr = (month) =>
     monthMap[Math.max(Math.min(11, month), 0)] || "Month";
 
@@ -172,66 +173,65 @@ const DatePicker = ({ onChange, arrowYear }) => {
   };
 
   return (
-    <div className="MyDatePicker border-2 border-black">
-      <div onClick={() => showDatePicker()}>
-        <input type="date" ref={inputRef} className="outline-none " />
-      </div>
+    <div className="relative">
+      <input onClick={() => showDatePicker()} type="date" ref={inputRef} className="outline-none border-2 overflow-hidden" />
       {
         /*details.showDatePicker*/ true && (
-          <div className="mdp-container">
+          <div className="max-w-sm w-full p-8 shadow-xl rounded-3xl">
             <div className="flex justify-between items-center">
-              <FontAwesomeIcon
+              {false && <FontAwesomeIcon
                 className='cursor-pointer'
                 icon={faAnglesLeft}
                 onClick={() => setYear(-1)}
-              />
+              />}
               <FontAwesomeIcon
                 className='cursor-pointer'
                 icon={faAngleLeft}
                 onClick={() => setMonth(-1)}
               />
-              <div className="border-2 w-max">
-                <div>{details.year}</div>
-                <div>{getMonthStr(details.month)}</div>
+              <div className="w-max font-bold">
+                <div>{details.year}<span className="px-2">/</span>{getMonthStr(details.month)}</div>
+                {/* <div>{getMonthStr(details.month)}</div> */}
               </div>
               <FontAwesomeIcon
                 className='cursor-pointer'
                 onClick={() => setMonth(1)}
                 icon={faAngleRight}
               />
-              <FontAwesomeIcon
+              {false && <FontAwesomeIcon
                 className='cursor-pointer'
                 icon={faAnglesRight}
                 onClick={() => setYear(1)}
-              />
+              />}
             </div>
-            <div className="mdpc-body">
-              <div className="c-container">
-                <div className="cc-head">
-                  {["SU", "MO", "TU", "WE", "TH", "FR", "SA"].map(
-                    (day, index) => (
-                      <div key={index} className="cch-name">
-                        {day}
-                      </div>
-                    )
-                  )}
-                </div>
-                <div className="cc-body">
-                  {details.monthDetails?.map((day, index) => (
-                    <div
-                      className={
-                        "c-day-container " +
-                        (day.month !== 0 ? " disabled" : "") +
-                        (isCurrentDay(day) ? " highlight" : "") +
-                        (isSelectedDay(day) ? " highlight-green" : "")
-                      }
-                      key={index}
-                    >
-                      <div className="cdc-day">
-                        <span onClick={() => onDateClick(day)}>{day.date}</span>
-                      </div>
+            <div className="w-full mt-5">
+              <div className="grid grid-cols-7 justify-items-center">
+                {["日", "一", "二", "三", "四", "五", "六"].map(
+                  (day, index) => (
+                    <div key={index} className="text-gray-500">
+                      {day}
                     </div>
-                  ))}
+                  )
+                )}
+                {details.monthDetails?.map((day, index) => (
+                  <div
+                    onClick={() => onDateClick(day)}
+                    className={
+                      "p-3" +
+                      (day.month !== 0 ? " disabled" : "") +
+                      (isCurrentDay(day) ? " highlight" : "") +
+                      (isSelectedDay(day) ? " highlight-active" : "")
+                    }
+                    key={index}
+                  >
+                    <div className="cell-day">
+                      {day.date}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div>
+                <div>
                 </div>
               </div>
             </div>

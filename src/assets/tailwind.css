@@ -3,21 +3,34 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* 
+
 @layer base {
   body {
     @apply box-border bg-white;
   }
-  input {
-    @apply outline-none;
-  }
-  button {
-    @apply outline-none;
-  }
-} */
+}
 
-/* @layer components {
-  .custom-CSS {
-    @apply relative z-0 block;
+
+@layer components {
+  .disabled{
+    @apply pointer-events-none
   }
-} */
+  .cell-day{
+    @apply cursor-pointer rounded-lg p-2 text-sm hover:bg-[#fffeed]
+  }
+  .disabled .cell-day{
+    @apply text-[#ddd] bg-white !important
+  }
+  .highlight .cell-day{
+    @apply bg-[#efdbca]
+  }
+  .highlight-active .cell-day{
+    @apply bg-[#d4e2cb]
+  }
+}
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+      display: none;
+      -webkit-appearance: none;
+  }
