@@ -2,7 +2,12 @@ import * as PropTypes from "prop-types";
 import { useState, createRef } from "react";
 import "./Styled.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleRight, faAngleLeft, faAnglesRight, faAnglesLeft } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleRight,
+  faAngleLeft,
+  faAnglesRight,
+  faAnglesLeft,
+} from "@fortawesome/free-solid-svg-icons";
 
 const DatePicker = ({ onChange, arrowYear }) => {
   const inputRef = createRef();
@@ -13,7 +18,7 @@ const DatePicker = ({ onChange, arrowYear }) => {
     "Wednesday",
     "Thursday",
     "Friday",
-    "Saturday"
+    "Saturday",
   ];
   const monthMap = [
     "January",
@@ -27,7 +32,7 @@ const DatePicker = ({ onChange, arrowYear }) => {
     "September",
     "October",
     "November",
-    "December"
+    "December",
   ];
 
   const getNumberOfDays = (year, month) => {
@@ -54,7 +59,7 @@ const DatePicker = ({ onChange, arrowYear }) => {
       day,
       month,
       timestamp,
-      dayString: daysMap[day]
+      dayString: daysMap[day],
     };
   };
 
@@ -73,7 +78,7 @@ const DatePicker = ({ onChange, arrowYear }) => {
           numberOfDays,
           firstDay,
           year,
-          month
+          month,
         });
         monthArray.push(currentDay);
         index++;
@@ -96,7 +101,7 @@ const DatePicker = ({ onChange, arrowYear }) => {
     year,
     month,
     selectedDay: todayTimestamp,
-    monthDetails: getMonthDetails(year, month)
+    monthDetails: getMonthDetails(year, month),
   });
 
   const showDatePicker = () => {
@@ -133,7 +138,7 @@ const DatePicker = ({ onChange, arrowYear }) => {
     setDetails({
       ...details,
       selectedDay: day.timestamp,
-      showDatePicker: false
+      showDatePicker: false,
     });
     setDateToInput(day.timestamp);
   };
@@ -144,7 +149,7 @@ const DatePicker = ({ onChange, arrowYear }) => {
     setDetails({
       ...details,
       year,
-      monthDetails: getMonthDetails(year, month)
+      monthDetails: getMonthDetails(year, month),
     });
   };
 
@@ -162,67 +167,77 @@ const DatePicker = ({ onChange, arrowYear }) => {
       ...details,
       year,
       month,
-      monthDetails: getMonthDetails(year, month)
+      monthDetails: getMonthDetails(year, month),
     });
   };
 
   return (
     <div className="MyDatePicker border-2 border-black">
       <div onClick={() => showDatePicker()}>
-        <input type="date" ref={inputRef} className='outline-none ' />
+        <input type="date" ref={inputRef} className="outline-none " />
       </div>
-      {/*details.showDatePicker*/ true && (
-        <div className="mdp-container">
-          <div>
-            <FontAwesomeIcon icon={faAnglesLeft} onClick={() => setYear(-1)}/>
-            <div >
-              <FontAwesomeIcon icon={faAngleLeft} onClick={() => setMonth(-1)}/>
-            </div>
-            <div >
-              <div >{details.year}</div>
-              <div >{getMonthStr(details.month)}</div>
-            </div>
-            <div >
-              <div  >
-            <FontAwesomeIcon onClick={() => setMonth(1)} icon={faAngleRight}/>
+      {
+        /*details.showDatePicker*/ true && (
+          <div className="mdp-container">
+            <div className="flex justify-between items-center">
+              <FontAwesomeIcon
+                className='cursor-pointer'
+                icon={faAnglesLeft}
+                onClick={() => setYear(-1)}
+              />
+              <FontAwesomeIcon
+                className='cursor-pointer'
+                icon={faAngleLeft}
+                onClick={() => setMonth(-1)}
+              />
+              <div className="border-2 w-max">
+                <div>{details.year}</div>
+                <div>{getMonthStr(details.month)}</div>
               </div>
+              <FontAwesomeIcon
+                className='cursor-pointer'
+                onClick={() => setMonth(1)}
+                icon={faAngleRight}
+              />
+              <FontAwesomeIcon
+                className='cursor-pointer'
+                icon={faAnglesRight}
+                onClick={() => setYear(1)}
+              />
             </div>
-            <div>
-              <FontAwesomeIcon icon={faAnglesRight} onClick={() => setYear(1)}/>
+            <div className="mdpc-body">
+              <div className="c-container">
+                <div className="cc-head">
+                  {["SU", "MO", "TU", "WE", "TH", "FR", "SA"].map(
+                    (day, index) => (
+                      <div key={index} className="cch-name">
+                        {day}
+                      </div>
+                    )
+                  )}
+                </div>
+                <div className="cc-body">
+                  {details.monthDetails?.map((day, index) => (
+                    <div
+                      className={
+                        "c-day-container " +
+                        (day.month !== 0 ? " disabled" : "") +
+                        (isCurrentDay(day) ? " highlight" : "") +
+                        (isSelectedDay(day) ? " highlight-green" : "")
+                      }
+                      key={index}
+                    >
+                      <div className="cdc-day">
+                        <span onClick={() => onDateClick(day)}>{day.date}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
-          <div className="mdpc-body">
-            <div className="c-container">
-              <div className="cc-head">
-                {["SU", "MO", "TU", "WE", "TH", "FR", "SA"].map(
-                  (day, index) => (
-                    <div key={index} className="cch-name">
-                      {day}
-                    </div>
-                  )
-                )}
-              </div>
-              <div className="cc-body">
-                {details.monthDetails?.map((day, index) => (
-                  <div
-                    className={
-                      "c-day-container " +
-                      (day.month !== 0 ? " disabled" : "") +
-                      (isCurrentDay(day) ? " highlight" : "") +
-                      (isSelectedDay(day) ? " highlight-green" : "")
-                    }
-                    key={index}
-                  >
-                    <div className="cdc-day">
-                      <span onClick={() => onDateClick(day)}>{day.date}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+        )
+      }
     </div>
   );
 };
@@ -231,9 +246,9 @@ export default DatePicker;
 
 DatePicker.propTypes = {
   onChange: PropTypes.func.isRequired,
-  arrowYear: PropTypes.oneOf(["none", "block"])
+  arrowYear: PropTypes.oneOf(["none", "block"]),
 };
 
 DatePicker.defaultProps = {
-  arrowYear: "none"
+  arrowYear: "none",
 };

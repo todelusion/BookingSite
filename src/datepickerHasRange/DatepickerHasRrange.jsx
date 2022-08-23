@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file  
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
 
-import { DateRangePicker } from 'react-date-range';
+import { DateRangePicker } from "react-date-range";
 
 class DatepickerHasRrange extends Component {
-  handleSelect(ranges){
+  handleSelect(ranges) {
     console.log(ranges);
     // {
     //   selection: {
@@ -15,18 +15,15 @@ class DatepickerHasRrange extends Component {
     //   }
     // }
   }
-  render(){
+  render() {
     const selectionRange = {
       startDate: new Date(),
       endDate: new Date(),
-      key: 'selection',
-    }
+      key: "selection",
+    };
     return (
-      <DateRangePicker
-        ranges={[selectionRange]}
-        onChange={this.handleSelect}
-      />
-    )
+      <DateRangePicker ranges={[selectionRange]} onChange={this.handleSelect} />
+    );
   }
 }
 export default DatepickerHasRrange;

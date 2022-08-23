@@ -9,8 +9,11 @@ import "react-datepicker/dist/react-datepicker.css";
 const DatepickerHasAll = () => {
   const [startDate, setStartDate] = useState(new Date());
   return (
-    <DatePicker selected={startDate} onChange={(date:Date) => setStartDate(date)} />
+    <DatePicker
+      selected={startDate}
+      onChange={(date: Date) => setStartDate(date)}
+    />
   );
 };
 
-export default DatepickerHasAll
+export default DatepickerHasAll;
