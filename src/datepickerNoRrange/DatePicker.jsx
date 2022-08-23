@@ -1,6 +1,8 @@
 import * as PropTypes from "prop-types";
 import { useState, createRef } from "react";
 import "./Styled.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleRight, faAngleLeft, faAnglesRight, faAnglesLeft } from "@fortawesome/free-solid-svg-icons";
 
 const DatePicker = ({ onChange, arrowYear }) => {
   const inputRef = createRef();
@@ -165,36 +167,28 @@ const DatePicker = ({ onChange, arrowYear }) => {
   };
 
   return (
-    <div className="MyDatePicker">
+    <div className="MyDatePicker border-2 border-black">
       <div onClick={() => showDatePicker()}>
         <input type="date" ref={inputRef} className='outline-none ' />
       </div>
       {/*details.showDatePicker*/ true && (
         <div className="mdp-container">
-          <div className="mdpc-head">
-            <div className="mdpch-button" style={{ display: arrowYear }}>
-              <div className="mdpchb-inner" onClick={() => setYear(-1)}>
-                <span className="mdpchbi-left-arrows"></span>
+          <div>
+            <FontAwesomeIcon icon={faAnglesLeft} onClick={() => setYear(-1)}/>
+            <div >
+              <FontAwesomeIcon icon={faAngleLeft} onClick={() => setMonth(-1)}/>
+            </div>
+            <div >
+              <div >{details.year}</div>
+              <div >{getMonthStr(details.month)}</div>
+            </div>
+            <div >
+              <div  >
+            <FontAwesomeIcon onClick={() => setMonth(1)} icon={faAngleRight}/>
               </div>
             </div>
-            <div className="mdpch-button">
-              <div className="mdpchb-inner" onClick={() => setMonth(-1)}>
-                <span className="mdpchbi-left-arrow"></span>
-              </div>
-            </div>
-            <div className="mdpch-container">
-              <div className="mdpchc-year">{details.year}</div>
-              <div className="mdpchc-month">{getMonthStr(details.month)}</div>
-            </div>
-            <div className="mdpch-button">
-              <div className="mdpchb-inner" onClick={() => setMonth(1)}>
-                <span className="mdpchbi-right-arrow"></span>
-              </div>
-            </div>
-            <div className="mdpch-button" style={{ display: arrowYear }}>
-              <div className="mdpchb-inner" onClick={() => setYear(1)}>
-                <span className="mdpchbi-right-arrows"></span>
-              </div>
+            <div>
+              <FontAwesomeIcon icon={faAnglesRight} onClick={() => setYear(1)}/>
             </div>
           </div>
           <div className="mdpc-body">
