@@ -1,6 +1,11 @@
+import React, { Component } from 'react';
+
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file  
+
 import { DateRangePicker } from 'react-date-range';
 
-export class MyComponent extends Component {
+class DatepickerHasRrange extends Component {
   handleSelect(ranges){
     console.log(ranges);
     // {
@@ -24,3 +29,4 @@ export class MyComponent extends Component {
     )
   }
 }
+export default DatepickerHasRrange;

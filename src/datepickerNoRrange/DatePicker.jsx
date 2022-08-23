@@ -166,10 +166,10 @@ const DatePicker = ({ onChange, arrowYear }) => {
 
   return (
     <div className="MyDatePicker">
-      <div className="mdp-input" onClick={() => showDatePicker()}>
-        <input type="date" ref={inputRef} />
+      <div onClick={() => showDatePicker()}>
+        <input type="date" ref={inputRef} className='outline-none ' />
       </div>
-      {details.showDatePicker && (
+      {/*details.showDatePicker*/ true && (
         <div className="mdp-container">
           <div className="mdpc-head">
             <div className="mdpch-button" style={{ display: arrowYear }}>
