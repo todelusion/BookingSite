@@ -37,14 +37,32 @@ const DatePicker = ({onChange}: DatePickerProps) => {
     "11",
     "12",
   ];
-
+  const oneDay = 60 * 60 * 24 * 1000;
+  
+  //當日時間戳
+  const todayTimestamp =
+    Date.now() -
+    (Date.now() % oneDay) +
+    new Date().getTimezoneOffset() * 1000 * 60;
+    
   const getNumberOfDays = (year: number, month: number) => {
     // To get the number of days in a month.
+    // 取得指定月份的天數
     return 40 - new Date(year, month, 40).getDate();
   };
 
-  const getDayDetails = (args: { index: any; numberOfDays: any; firstDay: any; year: any; month: any; }) => {
-    const date = args.index - args.firstDay;
+  const getDayDetails = (args: { index: number; numberOfDays: number; firstDay: {firstDay_day: number, firstDay_timestamp: number}; year: number; month: number; }) => {
+    //firstDay:上個月的天數、對應的時間戳記
+    //index: 面板上的所有天數
+    
+    const date = args.index - args.firstDay.firstDay_day;
+    
+    // console.log(`樣板天數${args.index} - 上個月的天數${args.firstDay.firstDay_day}，== 多餘的樣板天數${date}`)
+
+    // console.log(`樣板上的所有天數${args.index}`)
+    
+    // console.log(`當月總天數${args.numberOfDays}`)
+
     const day = args.index % 7;
     let prevMonth = args.month - 1;
     let prevYear = args.year;
@@ -55,7 +73,14 @@ const DatePicker = ({onChange}: DatePickerProps) => {
     const prevMonthNumberOfDays = getNumberOfDays(prevYear, prevMonth);
     const _date =
       (date < 0 ? prevMonthNumberOfDays + date : date % args.numberOfDays) + 1;
-    const month = date < 0 ? -1 : date >= args.numberOfDays ? 1 : 0;
+
+    //date < 0（當月起始日） ? -1 : 下一組判斷式
+    //date >= args.numberOfDays（當月總天數） ? 1 : 0; 
+
+    const month: 0 | 1 | -1 = date < 0 ? -1 : date >= args.numberOfDays ? 1 : 0;
+    
+    // const month: 0 | 1 | -1 = newDate < 0 ? -1 : date >= args.numberOfDays ? 1 : 0;
+    
     const timestamp = new Date(args.year, args.month, _date).getTime();
     return {
       date: _date,
@@ -68,7 +93,8 @@ const DatePicker = ({onChange}: DatePickerProps) => {
 
   const getMonthDetails = (year: number, month: number) => {
     // To get the start of the month.
-    const firstDay = new Date(year, month).getDay();
+    // console.log(new Date(year, month))
+    const firstDay = {firstDay_day:new Date(year, month).getDay(), firstDay_timestamp:new Date(year, month).getTime()};
     const numberOfDays = getNumberOfDays(year, month);
     const monthArray = [];
     const rows = 6;
@@ -90,11 +116,15 @@ const DatePicker = ({onChange}: DatePickerProps) => {
     return monthArray;
   };
 
-  const oneDay = 60 * 60 * 24 * 1000;
-  const todayTimestamp =
-    Date.now() -
-    (Date.now() % oneDay) +
-    new Date().getTimezoneOffset() * 1000 * 60;
+  
+
+  //今天的時間戳記（已移動位置）
+  // const todayTimestamp =
+  //   Date.now() -
+  //   (Date.now() % oneDay) +
+  //   new Date().getTimezoneOffset() * 1000 * 60;
+  //今天的時間戳記
+  
   const date = new Date();
   const year = date.getFullYear();
   const month = date.getMonth();
@@ -106,15 +136,18 @@ const DatePicker = ({onChange}: DatePickerProps) => {
     selectedDay: todayTimestamp,
     monthDetails: getMonthDetails(year, month),
   });
+
+  //開關datepicker
   const showDatePicker = () => {
     setDetails({ ...details, showDatePicker: !details.showDatePicker });
   };
 
-  const isCurrentDay = (day: { date?: number; day?: number; month?: number; timestamp: any; dayString?: string; }) => {
+  const isCurrentDay = (day: { date?: number; day?: number; month?: number; timestamp?: number; dayString?: string; }) => {
     return day.timestamp === todayTimestamp;
   };
 
-  const isSelectedDay = (day: { date?: number; day?: number; month?: number; timestamp: any; dayString?: string; }) => {
+  const isSelectedDay = (day: { date?: number; day?: number; month?: number; timestamp: number; dayString?: string; }) => {
+    if(details.selectedDay < todayTimestamp)return
     return day.timestamp === details.selectedDay;
   };
 
@@ -137,12 +170,18 @@ const DatePicker = ({onChange}: DatePickerProps) => {
     onChange({ timestamp, dateString });
   };
 
-  const onDateClick = (day: { date?: number; day?: number; month?: number; timestamp: any; dayString?: string; }) => {
+  const onDateClick = (day: { date?: number; day?: number; month?: number; timestamp: number; dayString?: string; }) => {
+    //若選擇的日期小於今天則不動作
+    if(day.timestamp < todayTimestamp)return
+    
     setDetails({
       ...details,
       selectedDay: day.timestamp,
+
+      //選完date後關閉日期視窗
       showDatePicker: false,
     });
+    
     setDateToInput(day.timestamp);
   };
 
@@ -175,7 +214,7 @@ const DatePicker = ({onChange}: DatePickerProps) => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative select-none">
       <input onClick={() => showDatePicker()} type="date" ref={inputRef} className="outline-none border-2 overflow-hidden" />
       {
         /*details.showDatePicker*/ true && (
