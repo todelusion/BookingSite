@@ -1,29 +1,23 @@
-import React, { Component } from "react";
+import { useState } from 'react'
+import { DateRange } from 'react-date-range';
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 
-import "react-date-range/dist/styles.css"; // main style file
-import "react-date-range/dist/theme/default.css"; // theme css file
-
-import { DateRangePicker } from "react-date-range";
-
-class DatepickerHasRrange extends Component {
-  handleSelect(ranges) {
-    console.log(ranges);
-    // {
-    //   selection: {
-    //     startDate: [native Date Object],
-    //     endDate: [native Date Object],
-    //   }
-    // }
-  }
-  render() {
-    const selectionRange = {
+function DatepickerHasRrange(){
+const [state, setState] = useState([
+    {
       startDate: new Date(),
-      endDate: new Date(),
-      key: "selection",
-    };
-    return (
-      <DateRangePicker ranges={[selectionRange]} onChange={this.handleSelect} />
-    );
-  }
+      endDate: null,
+      key: 'selection'
+    }
+  ]);
+  return(
+  <DateRange
+    editableDateInputs={true}
+    onChange={item => setState([item.selection])}
+    moveRangeOnFirstSelection={false}
+    ranges={state}
+  />
+)
 }
-export default DatepickerHasRrange;
+export default DatepickerHasRrange

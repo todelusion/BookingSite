@@ -16,7 +16,7 @@
     @apply pointer-events-none
   }
   .cell-day{
-    @apply cursor-pointer rounded-lg p-2 text-sm hover:bg-[#fffeed]
+    @apply cursor-pointer rounded-lg p-2 text-sm hover:bg-gray-100
   }
   .disabled .cell-day{
     @apply text-[#ddd] bg-white !important

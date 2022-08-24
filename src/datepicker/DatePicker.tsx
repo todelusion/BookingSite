@@ -1,6 +1,5 @@
 import * as PropTypes from "prop-types";
-import { useState, createRef } from "react";
-import "./Styled.css";
+import { useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAngleRight,
@@ -9,9 +8,12 @@ import {
   faAnglesLeft,
 } from "@fortawesome/free-solid-svg-icons";
 
+type DatePickerProps = {
+  onChange: (time: {timestamp: number; dateString: string}) => {}
+}
 
-const DatePicker = ({ onChange, arrowYear }) => {
-  const inputRef = createRef();
+const DatePicker = ({onChange}: DatePickerProps) => {
+  const inputRef = useRef<HTMLInputElement>(null!);
   const daysMap = [
     "Sunday",
     "Monday",
@@ -36,12 +38,12 @@ const DatePicker = ({ onChange, arrowYear }) => {
     "12",
   ];
 
-  const getNumberOfDays = (year, month) => {
+  const getNumberOfDays = (year: number, month: number) => {
     // To get the number of days in a month.
     return 40 - new Date(year, month, 40).getDate();
   };
 
-  const getDayDetails = (args) => {
+  const getDayDetails = (args: { index: any; numberOfDays: any; firstDay: any; year: any; month: any; }) => {
     const date = args.index - args.firstDay;
     const day = args.index % 7;
     let prevMonth = args.month - 1;
@@ -64,7 +66,7 @@ const DatePicker = ({ onChange, arrowYear }) => {
     };
   };
 
-  const getMonthDetails = (year, month) => {
+  const getMonthDetails = (year: number, month: number) => {
     // To get the start of the month.
     const firstDay = new Date(year, month).getDay();
     const numberOfDays = getNumberOfDays(year, month);
@@ -108,19 +110,19 @@ const DatePicker = ({ onChange, arrowYear }) => {
     setDetails({ ...details, showDatePicker: !details.showDatePicker });
   };
 
-  const isCurrentDay = (day) => {
+  const isCurrentDay = (day: { date?: number; day?: number; month?: number; timestamp: any; dayString?: string; }) => {
     return day.timestamp === todayTimestamp;
   };
 
-  const isSelectedDay = (day) => {
+  const isSelectedDay = (day: { date?: number; day?: number; month?: number; timestamp: any; dayString?: string; }) => {
     return day.timestamp === details.selectedDay;
   };
 
   //month_number to month_string
-  const getMonthStr = (month) =>
+  const getMonthStr = (month: number) =>
     monthMap[Math.max(Math.min(11, month), 0)] || "Month";
 
-  const getDateStringFromTimestamp = (timestamp) => {
+  const getDateStringFromTimestamp = (timestamp: string | number | Date) => {
     const dateObject = new Date(timestamp);
     const month = dateObject.getMonth() + 1;
     const date = dateObject.getDate();
@@ -129,13 +131,13 @@ const DatePicker = ({ onChange, arrowYear }) => {
     }`;
   };
 
-  const setDateToInput = (timestamp) => {
+  const setDateToInput = (timestamp: number) => {
     const dateString = getDateStringFromTimestamp(timestamp);
     inputRef.current.value = dateString;
     onChange({ timestamp, dateString });
   };
 
-  const onDateClick = (day) => {
+  const onDateClick = (day: { date?: number; day?: number; month?: number; timestamp: any; dayString?: string; }) => {
     setDetails({
       ...details,
       selectedDay: day.timestamp,
@@ -144,7 +146,7 @@ const DatePicker = ({ onChange, arrowYear }) => {
     setDateToInput(day.timestamp);
   };
 
-  const setYear = (offset) => {
+  const setYear = (offset: number) => {
     const year = details.year + offset;
     const month = details.month;
     setDetails({
@@ -154,7 +156,7 @@ const DatePicker = ({ onChange, arrowYear }) => {
     });
   };
 
-  const setMonth = (offset) => {
+  const setMonth = (offset: number) => {
     let year = details.year;
     let month = details.month + offset;
     if (month === -1) {
@@ -229,10 +231,6 @@ const DatePicker = ({ onChange, arrowYear }) => {
                     </div>
                   </div>
                 ))}
-              </div>
-              <div>
-                <div>
-                </div>
               </div>
             </div>
           </div>
