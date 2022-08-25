@@ -6,6 +6,7 @@ import {
   faAngleLeft,
   faAnglesRight,
   faAnglesLeft,
+  faL,
 } from "@fortawesome/free-solid-svg-icons";
 
 type DatePickerProps = {
@@ -134,6 +135,7 @@ const DatePicker = ({onChange}: DatePickerProps) => {
     year,
     month,
     selectedDay: todayTimestamp,
+    hoverDay:0,
     monthDetails: getMonthDetails(year, month),
   });
 
@@ -148,8 +150,33 @@ const DatePicker = ({onChange}: DatePickerProps) => {
 
   const isSelectedDay = (day: { date?: number; day?: number; month?: number; timestamp: number; dayString?: string; }) => {
     if(details.selectedDay < todayTimestamp)return
-    return day.timestamp === details.selectedDay;
+    // console.log(`${day.timestamp}面板值, ${details.selectedDay}選擇日`)
+    const selectedDays = (details.selectedDay - todayTimestamp)/oneDay
+    // console.log(`選擇日扣掉今日的天數${selectedDays}`)
+    
+    const selectedArr = []
+    for(let i=1; i<=selectedDays; i++){
+      // console.log(todayTimestamp, oneDay, todayTimestamp + (oneDay*i))
+      selectedArr.push(todayTimestamp + (oneDay*i))
+    }
+
+    // return day.timestamp === details.selectedDay;
+    return selectedArr.includes(day.timestamp)
   };
+
+  const isHoverDay = (day: { date?: number; day?: number; month?: number; timestamp: number; dayString?: string; }) => {
+    if(details.hoverDay < todayTimestamp)return
+    const hoverDays = (details.hoverDay - todayTimestamp)/oneDay
+    
+    const hoverDayArr = []
+    for(let i=1; i<=hoverDays; i++){
+      console.log(todayTimestamp, oneDay, todayTimestamp + (oneDay*i))
+      hoverDayArr.push(todayTimestamp + (oneDay*i))
+    }
+    // return day.timestamp === details.selectedDay;
+    return hoverDayArr.includes(day.timestamp)
+  };
+
 
   //month_number to month_string
   const getMonthStr = (month: number) =>
@@ -170,19 +197,18 @@ const DatePicker = ({onChange}: DatePickerProps) => {
     onChange({ timestamp, dateString });
   };
 
-  const onDateClick = (day: { date?: number; day?: number; month?: number; timestamp: number; dayString?: string; }) => {
+  const onDateClick = (day: { date?: number; day?: number; month?: number; timestamp: number; dayString?: string; }, e: any) => {
     //若選擇的日期小於今天則不動作
     if(day.timestamp < todayTimestamp)return
-    
-    setDetails({
-      ...details,
-      selectedDay: day.timestamp,
-
-      //選完date後關閉日期視窗
-      showDatePicker: false,
-    });
-    
-    setDateToInput(day.timestamp);
+      //丟入選擇的日期
+      setDetails({
+        ...details,
+        selectedDay: day.timestamp,
+  
+        //選完date後關閉日期視窗
+        showDatePicker: false,
+      });
+      setDateToInput(day.timestamp);
   };
 
   const setYear = (offset: number) => {
@@ -256,12 +282,14 @@ const DatePicker = ({onChange}: DatePickerProps) => {
                 )}
                 {details.monthDetails?.map((day, index) => (
                   <div
-                    onClick={() => onDateClick(day)}
+                    onClick={(e) => onDateClick(day, e)}
+                    /*onMouseEnter={(e) => onDateClick(day, e)}*/
                     className={
                       "p-3" +
                       (day.month !== 0 ? " disabled" : "") +
                       (isCurrentDay(day) ? " highlight" : "") +
-                      (isSelectedDay(day) ? " highlight-active" : "")
+                      (isSelectedDay(day) ? " highlight-active" : "") /*+
+                      (isHoverDay(day) ? "highlight-active" : "")*/
                     }
                     key={index}
                   >
