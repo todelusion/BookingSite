@@ -7,15 +7,15 @@ const onChange = (time:{timestamp: number; dateString: string}) => {
 };
 
 //DateHasRange
-// import DatepickerHasRrange from './Recycle Bin/datepickerHasRange/DatepickerHasRrange'
+import DatepickerHasRrange from './datepickerHasRange/DatepickerHasRrange'
 
 export default function App() {
 
   
   return (
     <div className="flex justify-center mt-20">
-      <DatePicker onChange={onChange} />
-      {/* <DatepickerHasRrange /> */}
+      {/* <DatePicker onChange={onChange} /> */}
+      <DatepickerHasRrange />
     </div>
   );
 }
