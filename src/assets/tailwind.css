@@ -27,7 +27,7 @@
     @apply bg-[#d4e2cb];
   }
   .swiper > .swiper-pagination {
-    @apply text-left left-28
+    @apply text-left left-52 bottom-10
   }
   .swiper > .swiper-pagination > .swiper-pagination-bullet {
     @apply bg-transparent border-2 border-white p-[3px]

@@ -34,10 +34,11 @@ export default function Home(): any{
             <p>HOUSE@HOTEL.COM</p>
           </div>
         </div>
-        <ul className="grid grid-cols-3 grid-rows-2 ml-32 gap-y-0 h-max">
+        <ul className="grid grid-cols-3 grid-rows-2 ml-32 gap-y-0 h-max pointer-events-auto">
           {data.items.map((item: item) => {
             return(
-              <li key={item.id} className='max-h-[275px]'><img src={item.imageUrl}  className='max-w-[275px] max-h-[275px] w-full h-full object-cover'/></li>
+              <li key={item.id} className='relative max-h-[275px] hover:before:content-["123"] before:text-white before:font-thin before:flex before:justify-center before:items-center before:absolute before:left-0 before:right-0  before:bottom-0 before:bg-primary/60'>
+                <img src={item.imageUrl}  className='max-w-[275px] max-h-[275px] w-full h-full object-cover '/></li>
             )
           })}
         </ul>

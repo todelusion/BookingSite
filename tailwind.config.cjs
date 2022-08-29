@@ -10,8 +10,8 @@ module.exports = {
         'xs': '384px'
       },
       colors: {
-        'primary': '#3F20FF',
-        'second': '#F589BE',
+        'primary': '#38470B',
+        'second': '#949C7C',
       }
     },
     fontFamily: {
