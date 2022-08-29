@@ -13,10 +13,10 @@
 @layer components {
   /* local css */
   .grid-pseudo {
-    @apply before:absolute before:left-0 before:top-1/2 before:right-0 before:bottom-0 before:flex before:items-center before:justify-center before:bg-primary/60 before:font-thin  before:text-white before:opacity-0
+    @apply before:absolute before:left-0 before:top-1/2 before:right-0 before:bottom-0 before:flex before:items-center before:justify-center before:bg-primary/60 before:font-thin  before:text-white before:opacity-0;
   }
   .grid-pseudo-hover {
-    @apply hover:before:top-0 hover:before:opacity-100 before:duration-300
+    @apply before:duration-300 hover:before:top-0 hover:before:opacity-100;
   }
 
   /* plugin custom css */
