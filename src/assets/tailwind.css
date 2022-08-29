@@ -10,29 +10,28 @@
   }
 }
 
-
 @layer components {
-  .disabled{
-    @apply pointer-events-none
+  .disabled {
+    @apply pointer-events-none;
   }
-  .cell-day{
-    @apply cursor-pointer rounded-lg p-2 text-sm hover:bg-gray-100
+  .cell-day {
+    @apply cursor-pointer rounded-lg p-2 text-sm hover:bg-gray-100;
   }
-  .disabled .cell-day{
-    @apply text-[#ddd] bg-white !important
+  .disabled .cell-day {
+    @apply bg-white text-[#ddd] !important;
   }
-  .highlight .cell-day{
-    @apply bg-[#efdbca]
+  .highlight .cell-day {
+    @apply bg-[#efdbca];
   }
-  .highlight-active .cell-day{
-    @apply bg-[#d4e2cb]
+  .highlight-active .cell-day {
+    @apply bg-[#d4e2cb];
   }
 }
 
 input[type="date"]::-webkit-inner-spin-button,
 input[type="date"]::-webkit-calendar-picker-indicator {
-      display: none;
-      -webkit-appearance: none;
+  display: none;
+  -webkit-appearance: none;
 }
 
 .swiper {

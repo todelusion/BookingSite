@@ -10,10 +10,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 type DatePickerProps = {
-  onChange: (time: {timestamp: number; dateString: string}) => {}
-}
+  onChange: (time: { timestamp: number; dateString: string }) => {};
+};
 
-const DatePicker = ({onChange}: DatePickerProps) => {
+const DatePicker = ({ onChange }: DatePickerProps) => {
   const inputRef = useRef<HTMLInputElement>(null!);
   const daysMap = [
     "Sunday",
@@ -39,29 +39,35 @@ const DatePicker = ({onChange}: DatePickerProps) => {
     "12",
   ];
   const oneDay = 60 * 60 * 24 * 1000;
-  
+
   //當日時間戳
   const todayTimestamp =
     Date.now() -
     (Date.now() % oneDay) +
     new Date().getTimezoneOffset() * 1000 * 60;
-    
+
   const getNumberOfDays = (year: number, month: number) => {
     // To get the number of days in a month.
     // 取得指定月份的天數
     return 40 - new Date(year, month, 40).getDate();
   };
 
-  const getDayDetails = (args: { index: number; numberOfDays: number; firstDay: {firstDay_day: number, firstDay_timestamp: number}; year: number; month: number; }) => {
+  const getDayDetails = (args: {
+    index: number;
+    numberOfDays: number;
+    firstDay: { firstDay_day: number; firstDay_timestamp: number };
+    year: number;
+    month: number;
+  }) => {
     //firstDay:上個月的天數、對應的時間戳記
     //index: 面板上的所有天數
-    
+
     const date = args.index - args.firstDay.firstDay_day;
-    
+
     // console.log(`樣板天數${args.index} - 上個月的天數${args.firstDay.firstDay_day}，== 多餘的樣板天數${date}`)
 
     // console.log(`樣板上的所有天數${args.index}`)
-    
+
     // console.log(`當月總天數${args.numberOfDays}`)
 
     const day = args.index % 7;
@@ -76,12 +82,12 @@ const DatePicker = ({onChange}: DatePickerProps) => {
       (date < 0 ? prevMonthNumberOfDays + date : date % args.numberOfDays) + 1;
 
     //date < 0（當月起始日） ? -1 : 下一組判斷式
-    //date >= args.numberOfDays（當月總天數） ? 1 : 0; 
+    //date >= args.numberOfDays（當月總天數） ? 1 : 0;
 
     const month: 0 | 1 | -1 = date < 0 ? -1 : date >= args.numberOfDays ? 1 : 0;
-    
+
     // const month: 0 | 1 | -1 = newDate < 0 ? -1 : date >= args.numberOfDays ? 1 : 0;
-    
+
     const timestamp = new Date(args.year, args.month, _date).getTime();
     return {
       date: _date,
@@ -95,7 +101,10 @@ const DatePicker = ({onChange}: DatePickerProps) => {
   const getMonthDetails = (year: number, month: number) => {
     // To get the start of the month.
     // console.log(new Date(year, month))
-    const firstDay = {firstDay_day:new Date(year, month).getDay(), firstDay_timestamp:new Date(year, month).getTime()};
+    const firstDay = {
+      firstDay_day: new Date(year, month).getDay(),
+      firstDay_timestamp: new Date(year, month).getTime(),
+    };
     const numberOfDays = getNumberOfDays(year, month);
     const monthArray = [];
     const rows = 6;
@@ -117,15 +126,13 @@ const DatePicker = ({onChange}: DatePickerProps) => {
     return monthArray;
   };
 
-  
-
   //今天的時間戳記（已移動位置）
   // const todayTimestamp =
   //   Date.now() -
   //   (Date.now() % oneDay) +
   //   new Date().getTimezoneOffset() * 1000 * 60;
   //今天的時間戳記
-  
+
   const date = new Date();
   const year = date.getFullYear();
   const month = date.getMonth();
@@ -135,7 +142,7 @@ const DatePicker = ({onChange}: DatePickerProps) => {
     year,
     month,
     selectedDay: todayTimestamp,
-    hoverDay:0,
+    hoverDay: 0,
     monthDetails: getMonthDetails(year, month),
   });
 
@@ -144,39 +151,56 @@ const DatePicker = ({onChange}: DatePickerProps) => {
     setDetails({ ...details, showDatePicker: !details.showDatePicker });
   };
 
-  const isCurrentDay = (day: { date?: number; day?: number; month?: number; timestamp?: number; dayString?: string; }) => {
+  const isCurrentDay = (day: {
+    date?: number;
+    day?: number;
+    month?: number;
+    timestamp?: number;
+    dayString?: string;
+  }) => {
     return day.timestamp === todayTimestamp;
   };
 
-  const isSelectedDay = (day: { date?: number; day?: number; month?: number; timestamp: number; dayString?: string; }) => {
-    if(details.selectedDay < todayTimestamp)return
+  const isSelectedDay = (day: {
+    date?: number;
+    day?: number;
+    month?: number;
+    timestamp: number;
+    dayString?: string;
+  }) => {
+    if (details.selectedDay < todayTimestamp) return;
     // console.log(`${day.timestamp}面板值, ${details.selectedDay}選擇日`)
-    const selectedDays = (details.selectedDay - todayTimestamp)/oneDay
+    const selectedDays = (details.selectedDay - todayTimestamp) / oneDay;
     // console.log(`選擇日扣掉今日的天數${selectedDays}`)
-    
-    const selectedArr = []
-    for(let i=1; i<=selectedDays; i++){
+
+    const selectedArr = [];
+    for (let i = 1; i <= selectedDays; i++) {
       // console.log(todayTimestamp, oneDay, todayTimestamp + (oneDay*i))
-      selectedArr.push(todayTimestamp + (oneDay*i))
+      selectedArr.push(todayTimestamp + oneDay * i);
     }
 
     // return day.timestamp === details.selectedDay;
-    return selectedArr.includes(day.timestamp)
+    return selectedArr.includes(day.timestamp);
   };
 
-  const isHoverDay = (day: { date?: number; day?: number; month?: number; timestamp: number; dayString?: string; }) => {
-    if(details.hoverDay < todayTimestamp)return
-    const hoverDays = (details.hoverDay - todayTimestamp)/oneDay
-    
-    const hoverDayArr = []
-    for(let i=1; i<=hoverDays; i++){
-      console.log(todayTimestamp, oneDay, todayTimestamp + (oneDay*i))
-      hoverDayArr.push(todayTimestamp + (oneDay*i))
+  const isHoverDay = (day: {
+    date?: number;
+    day?: number;
+    month?: number;
+    timestamp: number;
+    dayString?: string;
+  }) => {
+    if (details.hoverDay < todayTimestamp) return;
+    const hoverDays = (details.hoverDay - todayTimestamp) / oneDay;
+
+    const hoverDayArr = [];
+    for (let i = 1; i <= hoverDays; i++) {
+      console.log(todayTimestamp, oneDay, todayTimestamp + oneDay * i);
+      hoverDayArr.push(todayTimestamp + oneDay * i);
     }
     // return day.timestamp === details.selectedDay;
-    return hoverDayArr.includes(day.timestamp)
+    return hoverDayArr.includes(day.timestamp);
   };
-
 
   //month_number to month_string
   const getMonthStr = (month: number) =>
@@ -197,18 +221,27 @@ const DatePicker = ({onChange}: DatePickerProps) => {
     onChange({ timestamp, dateString });
   };
 
-  const onDateClick = (day: { date?: number; day?: number; month?: number; timestamp: number; dayString?: string; }, e: any) => {
+  const onDateClick = (
+    day: {
+      date?: number;
+      day?: number;
+      month?: number;
+      timestamp: number;
+      dayString?: string;
+    },
+    e: any
+  ) => {
     //若選擇的日期小於今天則不動作
-    if(day.timestamp < todayTimestamp)return
-      //丟入選擇的日期
-      setDetails({
-        ...details,
-        selectedDay: day.timestamp,
-  
-        //選完date後關閉日期視窗
-        showDatePicker: false,
-      });
-      setDateToInput(day.timestamp);
+    if (day.timestamp < todayTimestamp) return;
+    //丟入選擇的日期
+    setDetails({
+      ...details,
+      selectedDay: day.timestamp,
+
+      //選完date後關閉日期視窗
+      showDatePicker: false,
+    });
+    setDateToInput(day.timestamp);
   };
 
   const setYear = (offset: number) => {
@@ -241,37 +274,50 @@ const DatePicker = ({onChange}: DatePickerProps) => {
 
   return (
     <div className="relative select-none">
-      <input onClick={() => showDatePicker()} type="date" ref={inputRef} className="outline-none border-2 overflow-hidden" />
+      <input
+        onClick={() => showDatePicker()}
+        type="date"
+        ref={inputRef}
+        className="overflow-hidden border-2 outline-none"
+      />
       {
         /*details.showDatePicker*/ true && (
-          <div className="max-w-sm w-full p-8 shadow-xl rounded-3xl">
-            <div className="flex justify-between items-center">
-              {false && <FontAwesomeIcon
-                className='cursor-pointer'
-                icon={faAnglesLeft}
-                onClick={() => setYear(-1)}
-              />}
+          <div className="w-full max-w-sm rounded-3xl p-8 shadow-xl">
+            <div className="flex items-center justify-between">
+              {false && (
+                <FontAwesomeIcon
+                  className="cursor-pointer"
+                  icon={faAnglesLeft}
+                  onClick={() => setYear(-1)}
+                />
+              )}
               <FontAwesomeIcon
-                className='cursor-pointer'
+                className="cursor-pointer"
                 icon={faAngleLeft}
                 onClick={() => setMonth(-1)}
               />
               <div className="w-max font-bold">
-                <div>{details.year}<span className="px-2">/</span>{getMonthStr(details.month)}</div>
+                <div>
+                  {details.year}
+                  <span className="px-2">/</span>
+                  {getMonthStr(details.month)}
+                </div>
                 {/* <div>{getMonthStr(details.month)}</div> */}
               </div>
               <FontAwesomeIcon
-                className='cursor-pointer'
+                className="cursor-pointer"
                 onClick={() => setMonth(1)}
                 icon={faAngleRight}
               />
-              {false && <FontAwesomeIcon
-                className='cursor-pointer'
-                icon={faAnglesRight}
-                onClick={() => setYear(1)}
-              />}
+              {false && (
+                <FontAwesomeIcon
+                  className="cursor-pointer"
+                  icon={faAnglesRight}
+                  onClick={() => setYear(1)}
+                />
+              )}
             </div>
-            <div className="w-full mt-5">
+            <div className="mt-5 w-full">
               <div className="grid grid-cols-7 justify-items-center">
                 {["日", "一", "二", "三", "四", "五", "六"].map(
                   (day, index) => (
@@ -293,9 +339,7 @@ const DatePicker = ({onChange}: DatePickerProps) => {
                     }
                     key={index}
                   >
-                    <div className="cell-day">
-                      {day.date}
-                    </div>
+                    <div className="cell-day">{day.date}</div>
                   </div>
                 ))}
               </div>

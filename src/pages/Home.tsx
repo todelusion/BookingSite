@@ -1,28 +1,30 @@
-import React, { useRef, useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { useApi } from "../hooks/useApi";
+
+import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
-import 'swiper/css';
+import "swiper/css";
 import "swiper/css/pagination";
-
-import useFetch from '../hooks/useFetch';
+import useFetch from "../hooks/useFetch";
 
 export default function Home() {
-
+  const baseUrl = useApi().baseUrl;
+  const { data }: any = useFetch(`${baseUrl}/rooms`)
+  if(Object.keys(data).length === 0)return
+  console.log(data)
 
   return (
-    <div className="h-screen w-screen flex items-center justify-center">
+    <div className="flex h-screen w-screen items-center justify-center">
+      <h1>Hellow</h1>
       <Swiper pagination={true} modules={[Pagination]} className="mySwiper">
-        <SwiperSlide>Slide 1</SwiperSlide>
-        <SwiperSlide>Slide 2</SwiperSlide>
-        <SwiperSlide>Slide 3</SwiperSlide>
-        <SwiperSlide>Slide 4</SwiperSlide>
-        <SwiperSlide>Slide 5</SwiperSlide>
-        <SwiperSlide>Slide 6</SwiperSlide>
-        <SwiperSlide>Slide 7</SwiperSlide>
-        <SwiperSlide>Slide 8</SwiperSlide>
-        <SwiperSlide>Slide 9</SwiperSlide>
+        {data.items.map((item: { imageUrl: string; }) => {
+          return(
+            <SwiperSlide><img src={`${item.imageUrl}`} alt="" /></SwiperSlide>
+          )
+        })}
       </Swiper>
     </div>
-  )
+  );
 }
