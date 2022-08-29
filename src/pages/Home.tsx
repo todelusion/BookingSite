@@ -39,7 +39,7 @@ export default function Home(): any {
             return (
               <li
                 key={item.id}
-                className='relative max-h-[275px] before:absolute before:left-0 before:right-0 before:bottom-0 before:flex before:items-center before:justify-center before:bg-primary/60 before:font-thin  before:text-white hover:before:content-["123"]'
+                className='relative max-h-[275px] grid-pseudo grid-pseudo-hover before:content-["123"]'
               >
                 <img
                   src={item.imageUrl}
