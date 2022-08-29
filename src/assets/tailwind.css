@@ -26,12 +26,25 @@
   .highlight-active .cell-day {
     @apply bg-[#d4e2cb];
   }
+  .swiper > .swiper-pagination {
+    @apply text-left left-28
+  }
+  .swiper > .swiper-pagination > .swiper-pagination-bullet {
+    @apply bg-transparent border-2 border-white p-[3px]
+  }
+  .swiper > .swiper-pagination > .swiper-pagination-bullet-active {
+    @apply bg-white
+  }
 }
 
 input[type="date"]::-webkit-inner-spin-button,
 input[type="date"]::-webkit-calendar-picker-indicator {
   display: none;
   -webkit-appearance: none;
+}
+
+:root {
+  --swiper-theme-color: #fff
 }
 
 .swiper {
@@ -64,4 +77,5 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
 }
