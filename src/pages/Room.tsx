@@ -1,13 +1,29 @@
 import { useParams } from "react-router-dom";
+import { useApi } from "../hooks/useApi"
+import useFetch from "../hooks/useFetch";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
+type room  = [
+  {
+    id: string,
+    imageUrl: string,
+    normalDayPrice: number,
+    holidayPrice: number,
+    name: string,
+    description: string
+  }
+]
 
-export default function Room() {
-  const params = useParams();
-  console.log(params);
+export default function Room(): any {
+  const { id } = useParams();
+  const { baseUrl } = useApi()
+  const data = useFetch(`${baseUrl}/room/${id}`)
+  if (Object.keys(data).length === 0) return;
+  console.log(data);
+
   return (
     <div className="flex h-screen">
       <section className="pointer-events-none flex h-full w-full max-w-xl select-none items-center justify-center">
@@ -26,12 +42,14 @@ export default function Room() {
           autoplay={{ delay: 4000, disableOnInteraction: false }}
           className="swiper-rooms pointer-events-auto absolute max-w-xl select-none"
         >
+          {data.room.map((item) => {
+          return(
           <SwiperSlide className="swiper-pseudo">
             <img src="https://images.unsplash.com/photo-1551776235-dde6d482980b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2134&q=80" />
           </SwiperSlide>
-          <SwiperSlide className="swiper-pseudo">
-            <img src="https://images.unsplash.com/photo-1551776235-dde6d482980b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2134&q=80" />
-          </SwiperSlide>
+          )
+          })
+          }
         </Swiper>
       </section>
       <section></section>

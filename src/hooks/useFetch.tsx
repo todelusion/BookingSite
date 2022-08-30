@@ -1,12 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-type T = {
-  success?: boolean;
-  items?: object[];
-};
 
 const useFetch = (url: string) => {
-  const [data, setData] = useState<T>({});
+  const [data, setData] = useState<any>({});
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get(url, {
