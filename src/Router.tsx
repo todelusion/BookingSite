@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { ApiContext } from "./hooks/useApi";
 
 import Home from "./pages/Home";
+import Rooms from "./pages/Room"
 
 export default function Router() {
   const api = {
@@ -12,6 +13,7 @@ export default function Router() {
       <ApiContext.Provider value={api}>
         <Routes>
           <Route path="/" element={<Home />}></Route>
+          <Route path="/rooms/:id" element={<Rooms />}></Route>
         </Routes>
       </ApiContext.Provider>
     </>

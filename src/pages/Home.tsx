@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Link } from "react-router-dom"
 import { useApi } from "../hooks/useApi";
 import useFetch from "../hooks/useFetch";
 
@@ -74,11 +74,12 @@ export default function Home(): any {
               }
             `;
             return (
-              <Before_content>
-                <li key={item.id}>
-                  {/* {item.name.replace(/ /g, "")} */}
+              <Before_content key={item.id}>
+                <Link to={`/rooms/${item.id}`}>
+                <li>
                   <img src={item.imageUrl} />
                 </li>
+                </Link>
               </Before_content>
             );
           })}
