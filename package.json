@@ -27,6 +27,9 @@
     "zod": "^3.18.0"
   },
   "devDependencies": {
+    "@emotion/core": "^11.0.0",
+    "@emotion/react": "^11.10.0",
+    "@emotion/styled": "^11.10.0",
     "@types/react": "^18.0.17",
     "@types/react-date-range": "^1.4.4",
     "@types/react-dom": "^18.0.6",

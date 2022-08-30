@@ -12,12 +12,18 @@
 
 @layer components {
   /* local css */
+
+  /*目前找不到方法讓tailwind css套用到陣列偽元素content（::before content），因此改用Emotion(CSS in JS)替代方案
+
   .grid-pseudo {
     @apply before:absolute before:left-0 before:top-1/2 before:right-0 before:bottom-0 before:flex before:items-center before:justify-center before:bg-primary/60 before:font-thin  before:text-white before:opacity-0;
   }
   .grid-pseudo-hover {
     @apply before:duration-300 hover:before:top-0 hover:before:opacity-100;
   }
+
+  */
+
 
   /* plugin custom css */
   .disabled {
