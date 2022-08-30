@@ -40,6 +40,10 @@
   .highlight-active .cell-day {
     @apply bg-[#d4e2cb];
   }
+  .swiper-pseudo {
+    @apply relative before:absolute before:left-0 before:top-0 before:right-0 before:bottom-0 before:bg-gradient-to-t before:from-white before:text-black before:content-[''];
+  }
+
   .swiper > .swiper-pagination {
     @apply left-52 bottom-10 text-left;
   }
@@ -51,13 +55,13 @@
   }
 
   .swiper-rooms > .swiper-pagination {
-    @apply left-1/2 bottom-10 text-left;
+    @apply left-auto bottom-10 text-center;
   }
   .swiper-rooms > .swiper-pagination > .swiper-pagination-bullet {
-    @apply border-2 border-white bg-transparent p-[3px];
+    @apply border-2 border-primary bg-transparent p-[3px];
   }
   .swiper-rooms > .swiper-pagination > .swiper-pagination-bullet-active {
-    @apply bg-black;
+    @apply bg-primary;
   }
 }
 
