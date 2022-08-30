@@ -7,8 +7,7 @@ import { Autoplay, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import houseIcon from "../assets/houseIcon.svg";
-import styled from '@emotion/styled';
-
+import styled from "@emotion/styled";
 
 type item = {
   holidayPrice: number;
@@ -38,14 +37,15 @@ export default function Home(): any {
         </div>
         <ul className="pointer-events-auto ml-32 grid h-max grid-cols-3 grid-rows-2 gap-y-0">
           {data.items.map((item: item) => {
-              const Before_content = styled.div`
+            const Before_content = styled.div`
               li {
                 position: relative;
                 max-height: 275px;
-                height: 100%
+                height: 100%;
               }
               li::before {
-                content: '${item.name.replace(/ /g, "")}';
+                content: "${item.name.replace(/ /g, "")}";
+                font-size: 1.5vw; 
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -63,7 +63,7 @@ export default function Home(): any {
               }
               li:hover::before {
                 top: 0px;
-                opacity: 1
+                opacity: 1;
               }
               img {
                 height: 100%;
@@ -72,17 +72,13 @@ export default function Home(): any {
                 max-width: 275px;
                 object-fit: cover;
               }
-              `
+            `;
             return (
               <Before_content>
-              <li
-                key={item.id}
-              >
-                {/* {item.name.replace(/ /g, "")} */}
-                <img
-                  src={item.imageUrl}
-                />
-              </li>
+                <li key={item.id}>
+                  {/* {item.name.replace(/ /g, "")} */}
+                  <img src={item.imageUrl} />
+                </li>
               </Before_content>
             );
           })}
