@@ -45,7 +45,7 @@ export default function Home(): any {
               }
               li::before {
                 content: "${item.name.replace(/ /g, "")}";
-                font-size: 1.5vw; 
+                font-size: 1.25 vw; 
                 display: flex;
                 align-items: center;
                 justify-content: center;

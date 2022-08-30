@@ -49,6 +49,18 @@
   .swiper > .swiper-pagination > .swiper-pagination-bullet-active {
     @apply bg-white;
   }
+
+  .swiper-rooms > .swiper-pagination {
+    @apply left-52 bottom-10 text-left;
+  }
+  .swiper-rooms > .swiper-pagination > .swiper-pagination-bullet {
+    @apply border-2 border-white bg-transparent p-[3px];
+  }
+  .swiper-rooms > .swiper-pagination > .swiper-pagination-bullet-active {
+    @apply bg-black;
+  }
+
+
 }
 
 input[type="date"]::-webkit-inner-spin-button,
