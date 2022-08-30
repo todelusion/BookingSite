@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { ApiContext } from "./hooks/useApi";
 
 import Home from "./pages/Home";
-import Rooms from "./pages/Room"
+import Rooms from "./pages/Room";
 
 export default function Router() {
   const api = {

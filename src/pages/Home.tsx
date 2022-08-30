@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 import { useApi } from "../hooks/useApi";
 import useFetch from "../hooks/useFetch";
 
@@ -45,7 +45,7 @@ export default function Home(): any {
               }
               li::before {
                 content: "${item.name.replace(/ /g, "")}";
-                font-size: 1.25 vw; 
+                font-size: 1.25 vw;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -76,9 +76,9 @@ export default function Home(): any {
             return (
               <Before_content key={item.id}>
                 <Link to={`/rooms/${item.id}`}>
-                <li>
-                  <img src={item.imageUrl} />
-                </li>
+                  <li>
+                    <img src={item.imageUrl} />
+                  </li>
                 </Link>
               </Before_content>
             );
