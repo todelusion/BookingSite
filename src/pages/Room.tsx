@@ -6,8 +6,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
-type room  = [
-  {
+type Data = {
+  success?: boolean;
+  room?:    Room[];
+  booking?: any[];
+}
+
+type Room  = {
     id: string,
     imageUrl: string,
     normalDayPrice: number,
@@ -15,13 +20,14 @@ type room  = [
     name: string,
     description: string
   }
-]
 
-export default function Room(): any {
+export default function Room() {
   const { id } = useParams();
   const { baseUrl } = useApi()
-  const data = useFetch(`${baseUrl}/room/${id}`)
-  if (Object.keys(data).length === 0) return;
+  const { data }: Data|any = useFetch(`${baseUrl}/room/${id}`)
+
+  // const { success, room, booking }: Data|any = useFetch(`${baseUrl}/room/${id}`)
+  if (Object.keys(data).length === 0) return <p>Loading...</p>;
   console.log(data);
 
   return (
@@ -42,9 +48,9 @@ export default function Room(): any {
           autoplay={{ delay: 4000, disableOnInteraction: false }}
           className="swiper-rooms pointer-events-auto absolute max-w-xl select-none"
         >
-          {data.room.map((item) => {
+          {data.room.map((item: Room) => {
           return(
-          <SwiperSlide className="swiper-pseudo">
+          <SwiperSlide key={item.id} className="swiper-pseudo">
             <img src="https://images.unsplash.com/photo-1551776235-dde6d482980b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2134&q=80" />
           </SwiperSlide>
           )

@@ -9,18 +9,32 @@ import "swiper/css/pagination";
 import houseIcon from "../assets/houseIcon.svg";
 import styled from "@emotion/styled";
 
-type item = {
-  holidayPrice: number;
-  id: string;
-  imageUrl: string;
-  name: string;
-  normalDayPrice: number;
-};
+interface Data {
+  success?: boolean;
+  items?:   Item[];
+}
 
-export default function Home(): any {
+interface Item {
+  id:             string;
+  imageUrl:       string;
+  normalDayPrice: number;
+  holidayPrice:   number;
+  name:           string;
+}
+
+
+// type item = {
+//   holidayPrice: number;
+//   id: string;
+//   imageUrl: string;
+//   name: string;
+//   normalDayPrice: number;
+// };
+
+export default function Home() {
   const baseUrl = useApi().baseUrl;
-  const { data }: any = useFetch(`${baseUrl}/rooms`);
-  if (Object.keys(data).length === 0) return;
+  const { data } = useFetch(`${baseUrl}/rooms`);
+  if (Object.keys(data).length === 0) return <p>Loading</p>;
   console.log(data);
 
   return (
@@ -36,7 +50,7 @@ export default function Home(): any {
           </div>
         </div>
         <ul className="pointer-events-auto ml-32 grid h-max grid-cols-3 grid-rows-2 gap-y-0">
-          {data.items.map((item: item) => {
+          {data.items.map((item: Item) => {
             const Before_content = styled.div`
               li {
                 position: relative;
@@ -91,7 +105,7 @@ export default function Home(): any {
         autoplay={{ delay: 4000, disableOnInteraction: false }}
         className="pointer-events-auto absolute select-none"
       >
-        {data.items.map((item: item) => {
+        {data.items.map((item: Item) => {
           return (
             <SwiperSlide key={item.id}>
               <img
