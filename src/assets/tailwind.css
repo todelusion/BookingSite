@@ -43,6 +43,9 @@
   .swiper-pseudo {
     @apply relative before:absolute before:left-0 before:top-0 before:right-0 before:bottom-0 before:bg-gradient-to-t before:from-white before:text-black before:content-[''];
   }
+  .swiper-pseudo-black {
+    @apply after:z-0 after:pointer-events-auto relative after:absolute after:left-0 after:top-0 after:right-0 after:bottom-0 after:bg-black/50 after:content-[''];
+  }
 
   .swiper > .swiper-pagination {
     @apply left-52 bottom-10 text-left;
