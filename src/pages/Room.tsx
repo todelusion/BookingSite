@@ -9,7 +9,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import React, { useState } from "react";
 
-import { Breakfast, AirConditioner, MiniBar, RoomService, WiFi, ChildFriendly, Television, Refrigerator, Sofa, Smoke, PetFriendly, GreatView } from '../assets/icon/Icon'
+import { Breakfast, AirConditioner, MiniBar, RoomService, WiFi, ChildFriendly, Television, Refrigerator, Sofa, Smoke, PetFriendly, GreatView, Cancel, Ok } from '../assets/icon/Icon'
 
 
 type Data = {
@@ -103,7 +103,7 @@ export default function Room() {
               </ul>
               <p className="text-sm tracking-wider text-primary/80 leading-5 mb-11">{item.description}</p>
               <ul className="grid grid-cols-7 max-w-[635px] gap-y-6 items-center justify-items-center">
-                <li><img src={Breakfast} alt="Breakfast" /></li>
+                <li className="relative"><img src={Breakfast} alt="Breakfast" /><img src={Ok} alt="Ok" className={`absolute -right-5 top-0`} /><img src={Cancel} alt="Cancel" className={`absolute -right-5 top-0`} /></li>
                 <li><img src={MiniBar} alt="MiniBar" /></li>
                 <li><img src={RoomService} alt="RoomService" /></li>
                 <li><img src={WiFi} alt="WiFi" /></li>

@@ -10,6 +10,9 @@ import RoomService from './surface1-4.svg'
 import Sofa from './surface1-6.svg'
 import Smoke from './surface1-8.svg'
 import GreatView from './surface1-7.svg'
+import Cancel from './icons8-cancel.svg'
+import Ok from './icons8-ok.svg'
+
 
 export {AirConditioner,
     PetFriendly,
@@ -22,4 +25,6 @@ export {AirConditioner,
     RoomService,
     Sofa,
     Smoke,
-    GreatView}
+    GreatView,
+    Cancel,
+    Ok}
