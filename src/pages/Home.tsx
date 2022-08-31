@@ -42,7 +42,7 @@ export default function Home() {
       <div className="pointer-events-none z-10 flex h-full select-none items-center justify-between py-28 px-32">
         <div className="flex h-full flex-col justify-between">
           <img src={houseIcon} alt="LOGO" className="w-36" />
-          <div className="font-sans text-xs font-thin text-white">
+          <div className="text-xs font-thin text-white">
             <h1 className="mb-4 font-normal">好室旅店。HOUSE HOTEL</h1>
             <p className="mb-[6px]">花蓮縣花蓮市國聯一路1號</p>
             <p className="mb-[6px]">03-8321155</p>
