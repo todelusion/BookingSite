@@ -1,0 +1,12 @@
+diff --git a/node_modules/react-date-range/src/components/Calendar/index.js b/node_modules/react-date-range/src/components/Calendar/index.js
+index 73b9faa..2f2b32b 100644
+--- a/node_modules/react-date-range/src/components/Calendar/index.js
++++ b/node_modules/react-date-range/src/components/Calendar/index.js
+@@ -237,6 +237,7 @@ class Calendar extends PureComponent {
+         ) : (
+           <span className={styles.monthAndYearPickers}>
+             {this.state.monthNames[focusedDate.getMonth()]} {focusedDate.getFullYear()}
++            <p>123</p>
+           </span>
+         )}
+         {showMonthArrow ? (

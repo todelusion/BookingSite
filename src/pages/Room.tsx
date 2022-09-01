@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useApi } from "../hooks/useApi"
 import useFetch from "../hooks/useFetch";
@@ -7,7 +8,8 @@ import { Autoplay, Pagination, Navigation } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import React, { useState } from "react";
+
+import DatepickerHasRrange from "../components/datepickerHasRange/DatepickerHasRrange"
 
 import { Breakfast, AirConditioner, MiniBar, RoomService, WiFi, ChildFriendly, Television, Refrigerator, Sofa, Smoke, PetFriendly, GreatView, Cancel, Ok } from '../assets/icon/Icon'
 
@@ -25,13 +27,24 @@ type Room  = {
     holidayPrice: number,
     name: string,
     description: string,
-    checkInAndOut: CheckInAndOut;
+    checkInAndOut: CheckInAndOut,
+    amenities: { [key: string]: boolean },
+    descriptionShort: DescriptionShort
 }
 interface CheckInAndOut {
   checkInEarly: string;
   checkInLate:  string;
   checkOut:     string;
 }
+interface DescriptionShort {
+  GuestMin:       number;
+  GuestMax:       number;
+  Bed:            string[];
+  "Private-Bath": number;
+  Footage:        number;
+}
+
+
 
 export default function Room() {
   const { id } = useParams();
@@ -91,35 +104,85 @@ export default function Room() {
         
       </>
       }
-      <section className="pt-24 pb-8 pl-7 pr-32">
+      <section className="flex flex-col pt-32 pb-14 pl-7 pr-32">
         {data.room.map((item: Room) => {
           return(
-            <React.Fragment key={item.id}>
-              <h2 className="text-4xl font-medium text-primary mb-10">{item.name}</h2>
+            <div key={item.id} className='mb-7'>
+              <p className="text-right mb-12 text-sm text-primary font-medium">{item.descriptionShort.GuestMax} guest．{item.name}．{item.amenities.Breakfast ? 'breakfast' : ''}．{item.descriptionShort["Private-Bath"] > 0 ? `private-Bath * ${item.descriptionShort["Private-Bath"]}` : ''}．{item.descriptionShort.Footage}㎡</p>
               <ul className="text-sm tracking-wider text-primary/80 leading-7 mb-9">
                 <li>平日（一～四）價格：{item.normalDayPrice}<span className="px-3">/</span>假日（五～日）價格：{item.holidayPrice}</li>
                 <li>入住時間：{item.checkInAndOut.checkInEarly}（最早）<span className="px-3">/</span>{item.checkInAndOut.checkInLate}（最晚）</li>
                 <li>退房時間：{item.checkInAndOut.checkOut}</li> 
               </ul>
               <p className="text-sm tracking-wider text-primary/80 leading-5 mb-11">{item.description}</p>
-              <ul className="grid grid-cols-7 max-w-[635px] gap-y-6 items-center justify-items-center">
-                <li className="relative"><img src={Breakfast} alt="Breakfast" /><img src={Ok} alt="Ok" className={`absolute -right-5 top-0`} /><img src={Cancel} alt="Cancel" className={`absolute -right-5 top-0`} /></li>
-                <li><img src={MiniBar} alt="MiniBar" /></li>
-                <li><img src={RoomService} alt="RoomService" /></li>
-                <li><img src={WiFi} alt="WiFi" /></li>
-                <li><img src={ChildFriendly} alt="ChildFriendly" /></li>
-                <li><img src={Television} alt="Television" /></li>
-                <li><img src={GreatView} alt="GreatView" /></li>
-                <li><img src={Refrigerator} alt="Television" /></li>
-                <li><img src={Sofa} alt="Television" /></li>
-                <li><img src={PetFriendly} alt="ChildFriendly" /></li>
-                <li><img src={Smoke} alt="Smoke" /></li>
-                <li><img src={AirConditioner} alt="AirConditioner" /></li>
+              <ul className="grid grid-cols-7 gap-x-9 max-w-[635px] gap-y-6  justify-items-center">
+                <li className={`${item.amenities.Breakfast ? 'opacity-100' : 'opacity-70'} relative`}>
+                  <img src={Breakfast} alt="Breakfast" />
+                  <img src={Ok} alt="Ok" className={`${item.amenities.Breakfast ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                  <img src={Cancel} alt="Cancel" className={`${!item.amenities.Breakfast ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                </li>
+                <li className={`${item.amenities['Mini-Bar'] ? 'opacity-100' : 'opacity-20'} relative`}>
+                  <img src={MiniBar} alt="MiniBar" />
+                  <img src={Ok} alt="Ok" className={`${item.amenities['Mini-Bar'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                  <img src={Cancel} alt="Cancel" className={`${!item.amenities['Mini-Bar'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                </li>
+                <li className={`${item.amenities['Room-Service'] ? 'opacity-100' : 'opacity-20'} relative`}>
+                  <img src={RoomService} alt="RoomService" />
+                  <img src={Ok} alt="Ok" className={`${item.amenities['Room-Service'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                  <img src={Cancel} alt="Cancel" className={`${!item.amenities['Room-Service'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                </li>
+                <li className={`${item.amenities['Wi-Fi'] ? 'opacity-100' : 'opacity-20'} relative`}>
+                  <img src={WiFi} alt="WiFi" />
+                  <img src={Ok} alt="Ok" className={`${item.amenities['Wi-Fi'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                  <img src={Cancel} alt="Cancel" className={`${!item.amenities['Wi-Fi'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                </li>
+                <li className={`${item.amenities['Child-Friendly'] ? 'opacity-100' : 'opacity-20'} relative`}>
+                  <img src={ChildFriendly} alt="ChildFriendly" />
+                  <img src={Ok} alt="Ok" className={`${item.amenities['Child-Friendly'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                  <img src={Cancel} alt="Cancel" className={`${!item.amenities['Child-Friendly'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                </li>
+                <li className={`${item.amenities['Television'] ? 'opacity-100' : 'opacity-20'} relative`}>
+                  <img src={Television} alt="Television" />
+                  <img src={Ok} alt="Ok" className={`${item.amenities['Television'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                  <img src={Cancel} alt="Cancel" className={`${!item.amenities['Television'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                </li>
+                <li className={`${item.amenities['Great-View'] ? 'opacity-100' : 'opacity-20'} relative`}>
+                  <img src={GreatView} alt="GreatView" />
+                  <img src={Ok} alt="Ok" className={`${item.amenities['Great-View'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                  <img src={Cancel} alt="Cancel" className={`${!item.amenities['Great-View'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                </li>
+                <li className={`${item.amenities['Refrigerator'] ? 'opacity-100' : 'opacity-20'} relative`}>
+                  <img src={Refrigerator} alt="Refrigerator" />
+                  <img src={Ok} alt="Ok" className={`${item.amenities['Refrigerator'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                  <img src={Cancel} alt="Cancel" className={`${!item.amenities['Refrigerator'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                </li>
+                <li className={`${item.amenities['Sofa'] ? 'opacity-100' : 'opacity-20'} relative`}>
+                  <img src={Sofa} alt="Sofa" />
+                  <img src={Ok} alt="Ok" className={`${item.amenities['Sofa'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                  <img src={Cancel} alt="Cancel" className={`${!item.amenities['Sofa'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                </li>
+                <li className={`${item.amenities['Pet-Friendly'] ? 'opacity-100' : 'opacity-20'} relative`}>
+                  <img src={PetFriendly} alt="PetFriendly" />
+                  <img src={Ok} alt="Ok" className={`${item.amenities['Pet-Friendly'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                  <img src={Cancel} alt="Cancel" className={`${!item.amenities['Pet-Friendly'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                </li>
+                <li className={`${item.amenities['Smoke-Free'] ? 'opacity-100' : 'opacity-20'} relative`}>
+                  <img src={Smoke} alt="Smoke" />
+                  <img src={Ok} alt="Ok" className={`${item.amenities['Smoke-Free'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                  <img src={Cancel} alt="Cancel" className={`${!item.amenities['Smoke-Free'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                </li>
+                <li className={`${item.amenities['Air-Conditioner'] ? 'opacity-100' : 'opacity-20'} relative`}>
+                  <img src={AirConditioner} alt="AirConditioner" />
+                  <img src={Ok} alt="Ok" className={`${item.amenities['Air-Conditioner'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                  <img src={Cancel} alt="Cancel" className={`${!item.amenities['Air-Conditioner'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                </li>
               </ul>
-            </React.Fragment>
+            </div>
           )
         })}
+        <DatepickerHasRrange />
       </section>
+      
     </div>
   );
 }

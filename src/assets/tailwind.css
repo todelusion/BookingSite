@@ -40,6 +40,7 @@
   .highlight-active .cell-day {
     @apply bg-[#d4e2cb];
   }
+  
   .swiper-pseudo {
     @apply relative before:absolute before:left-0 before:top-0 before:right-0 before:bottom-0 before:bg-gradient-to-t before:from-white before:text-black before:content-[''];
   }
