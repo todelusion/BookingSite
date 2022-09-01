@@ -24,8 +24,8 @@ function DatepickerHasRrange() {
     document.getElementsByClassName("rdrDateDisplayWrapper")[0].style.display =
       "none";
     [...document.getElementsByClassName("rdrMonthName")].forEach(div => div.style.display = "none")
-    }, []);
-  console.log(document.getElementsByClassName("rdrMonthAndYearPickers"))
+  
+  }, []);
 
   console.log(state);
   return (
@@ -36,7 +36,7 @@ function DatepickerHasRrange() {
       showMonthAndYearPickers = {false}
       months={2}
       minDate={new Date()}
-      rangeColors={["#F589BE", "#50E18B"]}
+      rangeColors={["#38470B", "#949C7C"]}
       ranges={state}
       direction="horizontal"
       monthDisplayFormat="yyyy / M"
