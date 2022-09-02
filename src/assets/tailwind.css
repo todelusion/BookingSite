@@ -121,12 +121,10 @@ button > .rdrEndEdge {
 button > .rdrInRange {
   color: #D7DACE !important;
 }
-button > .rdrStartEdge {
-  border-radius: 49% !important;
-  top: 10% !important;
-  bottom: 10% !important;
-  left: 10% !important;
-  right: 10% !important;
+.rdrDayToday > .rdrDayNumber > span:after{
+  background: rgb(56, 71, 11);
 }
-
+.rdrDateRangeWrapper {
+  border: 1px solid #38470B;
+}
 

@@ -9,9 +9,11 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-import DatepickerHasRrange from "../components/datepickerHasRange/DatepickerHasRrange"
-
 import { Breakfast, AirConditioner, MiniBar, RoomService, WiFi, ChildFriendly, Television, Refrigerator, Sofa, Smoke, PetFriendly, GreatView, Cancel, Ok } from '../assets/icon/Icon'
+
+import DatepickerHasRrange from "../components/datepickerHasRange/DatepickerHasRrange"
+import Checkout from "../components/Checkout"
+
 
 
 type Data = {
@@ -53,9 +55,8 @@ export default function Room() {
   const [swiperModal, setSwiperModal] = useState<{toggleModal: boolean, swiperIndex?: number}>({toggleModal: false, swiperIndex:1})
 
   if (Object.keys(data).length === 0) return <p>Loading...</p>;
-  console.log(data);
   return (
-    <div className="flex h-screen justify-between">
+    <div className="flex h-screen">
       <section className="relative pointer-events-none flex h-full w-full max-w-xl select-none items-center justify-center">
         <div className="z-10 mt-32">
           <p className="mb-4 text-center text-4xl text-primary">
@@ -104,11 +105,11 @@ export default function Room() {
         
       </>
       }
-      <section className="flex flex-col pt-32 pb-14 pl-7 pr-32">
+      <section className="flex flex-col pt-10 pl-7 pr-32">
         {data.room.map((item: Room) => {
           return(
-            <div key={item.id} className='mb-7'>
-              <p className="text-right mb-12 text-sm text-primary font-medium">{item.descriptionShort.GuestMax} guest．{item.name}．{item.amenities.Breakfast ? 'breakfast' : ''}．{item.descriptionShort["Private-Bath"] > 0 ? `private-Bath * ${item.descriptionShort["Private-Bath"]}` : ''}．{item.descriptionShort.Footage}(㎡)</p>
+            <div key={item.id}>
+              <p className="text-right mb-5 text-sm text-primary font-medium">{item.descriptionShort.GuestMax} guest．{item.name}．{item.amenities.Breakfast ? 'breakfast' : ''}．{item.descriptionShort["Private-Bath"] > 0 ? `private-Bath * ${item.descriptionShort["Private-Bath"]}` : ''}．{item.descriptionShort.Footage}(㎡)</p>
               <ul className="text-sm tracking-wider text-primary/80 leading-7 mb-9">
                 <li>平日（一～四）價格：{item.normalDayPrice}<span className="px-3">/</span>假日（五～日）價格：{item.holidayPrice}</li>
                 <li>入住時間：{item.checkInAndOut.checkInEarly}（最早）<span className="px-3">/</span>{item.checkInAndOut.checkInLate}（最晚）</li>
@@ -180,9 +181,12 @@ export default function Room() {
             </div>
           )
         })}
+        <div className="pt-10 pb-14">
+        <p className="text-xs text-primary mb-2">空房狀態查詢</p>
         <DatepickerHasRrange />
+        </div>
       </section>
-      
+      {true && <Checkout data={data}/>}
     </div>
   );
 }
