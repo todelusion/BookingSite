@@ -6,7 +6,7 @@
 
 @layer base {
   body {
-    @apply box-border bg-white font-sans;
+    @apply box-border bg-white font-sans p-0 m-0;
   }
 }
 

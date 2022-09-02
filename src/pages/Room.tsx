@@ -56,6 +56,7 @@ export default function Room() {
 
   if (Object.keys(data).length === 0) return <p>Loading...</p>;
   return (
+    <>
     <div className="flex h-screen">
       <section className="relative pointer-events-none flex h-full w-full max-w-xl select-none items-center justify-center">
         <div className="z-10 mt-32">
@@ -116,66 +117,78 @@ export default function Room() {
                 <li>退房時間：{item.checkInAndOut.checkOut}</li> 
               </ul>
               <p className="text-sm tracking-wider text-primary/80 leading-5 mb-11">{item.description}</p>
-              <ul className="grid grid-cols-7 gap-x-9 max-w-[635px] gap-y-6  justify-items-center">
-                <li className={`${item.amenities.Breakfast ? 'opacity-100' : 'opacity-70'} relative`}>
+              <ul className="grid grid-cols-7 gap-x-9 max-w-[635px] gap-y-10  justify-items-center">
+                <li className={`${item.amenities.Breakfast ? 'opacity-100' : 'opacity-20'} relative flex flex-col items-center`}>
                   <img src={Breakfast} alt="Breakfast" />
                   <img src={Ok} alt="Ok" className={`${item.amenities.Breakfast ? 'block' : 'hidden'} absolute -right-5 top-0`} />
                   <img src={Cancel} alt="Cancel" className={`${!item.amenities.Breakfast ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                  <p className='text-xs text-second text-center whitespace-nowrap absolute -bottom-5'>早餐</p>
                 </li>
-                <li className={`${item.amenities['Mini-Bar'] ? 'opacity-100' : 'opacity-20'} relative`}>
+                <li className={`${item.amenities['Mini-Bar'] ? 'opacity-100' : 'opacity-20'} relative flex flex-col items-center`}>
                   <img src={MiniBar} alt="MiniBar" />
                   <img src={Ok} alt="Ok" className={`${item.amenities['Mini-Bar'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
                   <img src={Cancel} alt="Cancel" className={`${!item.amenities['Mini-Bar'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                  <p className='text-xs text-second text-center whitespace-nowrap absolute -bottom-5'>Mini Bar</p>
                 </li>
-                <li className={`${item.amenities['Room-Service'] ? 'opacity-100' : 'opacity-20'} relative`}>
+                <li className={`${item.amenities['Room-Service'] ? 'opacity-100' : 'opacity-20'} relative flex flex-col items-center`}>
                   <img src={RoomService} alt="RoomService" />
                   <img src={Ok} alt="Ok" className={`${item.amenities['Room-Service'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
                   <img src={Cancel} alt="Cancel" className={`${!item.amenities['Room-Service'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                  <p className='text-xs text-second text-center whitespace-nowrap absolute -bottom-5'>Room Service</p>
                 </li>
-                <li className={`${item.amenities['Wi-Fi'] ? 'opacity-100' : 'opacity-20'} relative`}>
+                <li className={`${item.amenities['Wi-Fi'] ? 'opacity-100' : 'opacity-20'} relative flex flex-col items-center`}>
                   <img src={WiFi} alt="WiFi" />
                   <img src={Ok} alt="Ok" className={`${item.amenities['Wi-Fi'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
                   <img src={Cancel} alt="Cancel" className={`${!item.amenities['Wi-Fi'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                  <p className='text-xs text-second text-center whitespace-nowrap absolute -bottom-5'>Wifi</p>
                 </li>
-                <li className={`${item.amenities['Child-Friendly'] ? 'opacity-100' : 'opacity-20'} relative`}>
+                <li className={`${item.amenities['Child-Friendly'] ? 'opacity-100' : 'opacity-20'} relative flex flex-col items-center`}>
                   <img src={ChildFriendly} alt="ChildFriendly" />
                   <img src={Ok} alt="Ok" className={`${item.amenities['Child-Friendly'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
                   <img src={Cancel} alt="Cancel" className={`${!item.amenities['Child-Friendly'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                  <p className='text-xs text-second text-center whitespace-nowrap absolute -bottom-5'>適合兒童</p>
                 </li>
-                <li className={`${item.amenities['Television'] ? 'opacity-100' : 'opacity-20'} relative`}>
+                <li className={`${item.amenities['Television'] ? 'opacity-100' : 'opacity-20'} relative flex flex-col items-center`}>
                   <img src={Television} alt="Television" />
                   <img src={Ok} alt="Ok" className={`${item.amenities['Television'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
                   <img src={Cancel} alt="Cancel" className={`${!item.amenities['Television'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                  <p className='text-xs text-second text-center whitespace-nowrap absolute -bottom-5'>電話</p>
                 </li>
-                <li className={`${item.amenities['Great-View'] ? 'opacity-100' : 'opacity-20'} relative`}>
+                <li className={`${item.amenities['Great-View'] ? 'opacity-100' : 'opacity-20'} relative flex flex-col items-center`}>
                   <img src={GreatView} alt="GreatView" />
                   <img src={Ok} alt="Ok" className={`${item.amenities['Great-View'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
                   <img src={Cancel} alt="Cancel" className={`${!item.amenities['Great-View'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                  <p className='text-xs text-second text-center whitespace-nowrap absolute -bottom-5'>漂亮的視野</p>
                 </li>
-                <li className={`${item.amenities['Refrigerator'] ? 'opacity-100' : 'opacity-20'} relative`}>
+                <li className={`${item.amenities['Refrigerator'] ? 'opacity-100' : 'opacity-20'} relative flex flex-col items-center`}>
                   <img src={Refrigerator} alt="Refrigerator" />
                   <img src={Ok} alt="Ok" className={`${item.amenities['Refrigerator'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
                   <img src={Cancel} alt="Cancel" className={`${!item.amenities['Refrigerator'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                  <p className='text-xs text-second text-center whitespace-nowrap absolute -bottom-5'>冰箱</p>
                 </li>
-                <li className={`${item.amenities['Sofa'] ? 'opacity-100' : 'opacity-20'} relative`}>
+                <li className={`${item.amenities['Sofa'] ? 'opacity-100' : 'opacity-20'} relative flex flex-col items-center`}>
                   <img src={Sofa} alt="Sofa" />
                   <img src={Ok} alt="Ok" className={`${item.amenities['Sofa'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
                   <img src={Cancel} alt="Cancel" className={`${!item.amenities['Sofa'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                  <p className='text-xs text-second text-center whitespace-nowrap absolute -bottom-5'>沙發</p>
                 </li>
-                <li className={`${item.amenities['Pet-Friendly'] ? 'opacity-100' : 'opacity-20'} relative`}>
+                <li className={`${item.amenities['Pet-Friendly'] ? 'opacity-100' : 'opacity-20'} relative flex flex-col items-center`}>
                   <img src={PetFriendly} alt="PetFriendly" />
                   <img src={Ok} alt="Ok" className={`${item.amenities['Pet-Friendly'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
                   <img src={Cancel} alt="Cancel" className={`${!item.amenities['Pet-Friendly'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                  <p className='text-xs text-second text-center whitespace-nowrap absolute -bottom-5'>寵物友善</p>
                 </li>
-                <li className={`${item.amenities['Smoke-Free'] ? 'opacity-100' : 'opacity-20'} relative`}>
+                <li className={`${item.amenities['Smoke-Free'] ? 'opacity-100' : 'opacity-20'} relative flex flex-col items-center`}>
                   <img src={Smoke} alt="Smoke" />
                   <img src={Ok} alt="Ok" className={`${item.amenities['Smoke-Free'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
                   <img src={Cancel} alt="Cancel" className={`${!item.amenities['Smoke-Free'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                  <p className='text-xs text-second text-center whitespace-nowrap absolute -bottom-5'>全面禁菸</p>
                 </li>
-                <li className={`${item.amenities['Air-Conditioner'] ? 'opacity-100' : 'opacity-20'} relative`}>
+                <li className={`${item.amenities['Air-Conditioner'] ? 'opacity-100' : 'opacity-20'} relative flex flex-col items-center`}>
                   <img src={AirConditioner} alt="AirConditioner" />
                   <img src={Ok} alt="Ok" className={`${item.amenities['Air-Conditioner'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
                   <img src={Cancel} alt="Cancel" className={`${!item.amenities['Air-Conditioner'] ? 'block' : 'hidden'} absolute -right-5 top-0`} />
+                  <p className='text-xs text-second text-center whitespace-nowrap absolute -bottom-5'>空調</p>
                 </li>
               </ul>
             </div>
@@ -186,7 +199,8 @@ export default function Room() {
         <DatepickerHasRrange />
         </div>
       </section>
-      {true && <Checkout data={data}/>}
     </div>
+    {true && <Checkout data={data}/>}
+    </>
   );
 }
