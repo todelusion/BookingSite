@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useApi } from "../hooks/useApi"
 import useFetch from "../hooks/useFetch";
 
@@ -10,6 +10,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 import { Breakfast, AirConditioner, MiniBar, RoomService, WiFi, ChildFriendly, Television, Refrigerator, Sofa, Smoke, PetFriendly, GreatView, Cancel, Ok } from '../assets/icon/Icon'
+import { arrow } from "../assets/flow/Flow";
 
 import DatepickerHasRrange from "../components/datepickerHasRange/DatepickerHasRrange"
 import Checkout from "../components/Checkout"
@@ -53,6 +54,7 @@ export default function Room() {
   const { baseUrl } = useApi()
   const { data }: Data|any = useFetch(`${baseUrl}/room/${id}`)
   const [swiperModal, setSwiperModal] = useState<{toggleModal: boolean, swiperIndex?: number}>({toggleModal: false, swiperIndex:1})
+  const [checkoutModal, setCheckoutModal] = useState({toggleCheckout: false})
 
   if (Object.keys(data).length === 0) return <p>Loading...</p>;
   return (
@@ -60,11 +62,14 @@ export default function Room() {
     <div className="flex h-screen">
       <section className="relative pointer-events-none flex h-full w-full max-w-xl select-none items-center justify-center">
         <div className="z-10 mt-32">
+          <Link to='/' className="pointer-events-auto">
+          <button className="absolute top-24 left-32 text-primary font-light flex items-center"><img src={arrow} className='rotate-180 mr-2'/> 查看其他房型</button>
+          </Link>
           <p className="mb-4 text-center text-4xl text-primary">
             $1,380 <span className="px-4 text-xl">/</span>
             <span className="text-xl">1晚</span>
           </p>
-          <button className="pointer-events-auto bg-primary py-2 px-14 text-white">
+          <button onClick={() => setCheckoutModal({toggleCheckout: true})} className="pointer-events-auto bg-primary py-2 px-14 text-white">
             Booking now
           </button>
         </div>
@@ -76,7 +81,7 @@ export default function Room() {
         >
           {data.room.map((item: Room) => (
               item.imageUrl.map((image, index) => (
-                <SwiperSlide onClick={() => setSwiperModal({toggleModal: true, swiperIndex: index})}  className="swiper-pseudo">
+                <SwiperSlide onClick={() => setSwiperModal({toggleModal: true, swiperIndex: index})}  className="swiper-pseudo blur-sm">
                   <img src={image}/>
                 </SwiperSlide>
                 ))
@@ -200,7 +205,7 @@ export default function Room() {
         </div>
       </section>
     </div>
-    {true && <Checkout data={data}/>}
+    {checkoutModal.toggleCheckout && <Checkout data={data} setCheckoutModal={setCheckoutModal}/>}
     </>
   );
 }

@@ -32,10 +32,10 @@ interface CheckInAndOut {
   }
 
 
-export default function Checkout({ data }: Data|any) {
+export default function Checkout({ data, setCheckoutModal }: Data|any) {
     console.log(data)
   return (
-    <div className='absolute w-full min-h-screen top-0 z-10 flex justify-center items-center backdrop-contrast-50 bg-white/60  py-20 px-32 '>
+    <div className='absolute w-full min-h-screen top-0 z-10 flex justify-center items-center backdrop-contrast-50 bg-white/60  py-10'>
         <div className='border-2 border-primary flex'>
             <section className='flex flex-col px-16 pt-12 pb-7 bg-primary max-w-md w-full'>
                 <form className='text-white font-light max-w-xs w-full'>
@@ -62,10 +62,10 @@ export default function Checkout({ data }: Data|any) {
                     <li>總計</li>
                     <li className='text-2xl font-normal'>$1,380</li>
                 </ul>
-                <button className='text-white py-2 px-28 border-[1px] border-second mb-4'>確定送出</button>
+                <button className='text-white py-2 px-28 border-[1px] border-second mb-4 hover:bg-white hover:text-primary'>確定送出</button>
                 <p className='text-white text-center text-xs'>此預約系統僅預約功能，並不會對您進行收費</p>
             </section>
-            <section className='flex flex-col px-8 pt-12 pb-7 bg-white w-full'>
+            <section className='flex flex-col px-8 pt-12 pb-7 bg-white w-full relative'>
             <div className='max-w-xl'>
                 {data.room.map((item: Room) => {
                     return(
@@ -163,6 +163,7 @@ export default function Checkout({ data }: Data|any) {
                     </li>
                 </ul>
             </div>
+            <button onClick={() => setCheckoutModal({toggleCheckout: false})} className='absolute right-10 top-7 text-3xl font-light'>X</button>
             </section>
         </div>
     </div>
