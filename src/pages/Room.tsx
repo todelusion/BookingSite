@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useApi } from "../hooks/useApi"
 import useFetch from "../hooks/useFetch";
+import useInputValue from "../hooks/useInputValue";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper";
@@ -48,13 +49,18 @@ interface DescriptionShort {
 }
 
 
-
 export default function Room() {
-  const { id } = useParams();
-  const { baseUrl } = useApi()
-  const { data }: Data|any = useFetch(`${baseUrl}/room/${id}`)
   const [swiperModal, setSwiperModal] = useState<{toggleModal: boolean, swiperIndex?: number}>({toggleModal: false, swiperIndex:1})
   const [checkoutModal, setCheckoutModal] = useState({toggleCheckout: false})
+  const { id } = useParams();
+
+  const { baseUrl } = useApi()
+  const { data }: Data|any = useFetch(`${baseUrl}/room/${id}`)
+  const [inputValue, setInputValue] = useInputValue({
+    name: "",
+    tel: "",
+    date:[]
+  });
 
   if (Object.keys(data).length === 0) return <p>Loading...</p>;
   return (
