@@ -21,7 +21,7 @@ import Checkout from "../components/Checkout"
 type Data = {
   success?: boolean;
   room?:    Room[];
-  booking?: any[];
+  booking?: Booking[];
 }
 
 type Room  = {
@@ -35,6 +35,12 @@ type Room  = {
     amenities: { [key: string]: boolean },
     descriptionShort: DescriptionShort
 }
+interface Booking {
+  name: string;
+  tel:  string;
+  date: Date;
+}
+
 interface CheckInAndOut {
   checkInEarly: string;
   checkInLate:  string;
@@ -59,7 +65,9 @@ export default function Room() {
   const [inputValue, setInputValue] = useInputValue({
     name: "",
     tel: "",
-    date:[]
+    startDate: "",
+    endDate: "",
+    date:[],
   });
 
   if (Object.keys(data).length === 0) return <p>Loading...</p>;
@@ -207,7 +215,7 @@ export default function Room() {
         })}
         <div className="pt-10 pb-14">
         <p className="text-xs text-primary mb-2">空房狀態查詢</p>
-        <DatepickerHasRrange />
+        <DatepickerHasRrange data={data} setInputValue={setInputValue} />
         </div>
       </section>
     </div>

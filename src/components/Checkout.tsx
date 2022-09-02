@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useRef } from 'react'
+
 import { Breakfast, AirConditioner, MiniBar, RoomService, WiFi, ChildFriendly, Television, Refrigerator, Sofa, Smoke, PetFriendly, GreatView } from '../assets/icon/Icon'
 import { flow1, flow2, flow3, arrow } from '../assets/flow/Flow'
 
@@ -23,16 +24,22 @@ interface CheckInAndOut {
     checkInLate:  string;
     checkOut:     string;
   }
-  interface DescriptionShort {
-    GuestMin:       number;
-    GuestMax:       number;
-    Bed:            string[];
-    "Private-Bath": number;
-    Footage:        number;
-  }
+interface DescriptionShort {
+GuestMin:       number;
+GuestMax:       number;
+Bed:            string[];
+"Private-Bath": number;
+Footage:        number;
+}
 
 
 export default function Checkout({ data, setCheckoutModal }: Data|any) {
+    const startDateRef = useRef<HTMLInputElement>(null!)
+    const endDateRef = useRef<HTMLInputElement>(null!)
+
+    console.log(startDateRef)
+    console.log(endDateRef)
+    
     console.log(data)
   return (
     <div className='absolute w-full min-h-screen top-0 z-10 flex justify-center items-center backdrop-contrast-50 bg-white/60  py-10'>
@@ -49,11 +56,11 @@ export default function Checkout({ data, setCheckoutModal }: Data|any) {
                     </label>
                     <label>
                         入住日期
-                        <input name='startDate' type="text" className='text-black block outline-none mt-2 mb-4 w-full'/>
+                        <input ref={startDateRef} name='startDate' type="date" className='text-black block outline-none mt-2 mb-4 w-full'/>
                     </label>
                     <label>
                         退房日期
-                        <input name='endDate' type="text" className='text-black block outline-none mt-2 mb-4 w-full'/>
+                        <input ref={endDateRef} name='endDate' type="date" className='text-black block outline-none mt-2 mb-4 w-full'/>
                     </label>
                 </form>
                 <p className='text-second mb-3'>2天，1晚平日</p>
