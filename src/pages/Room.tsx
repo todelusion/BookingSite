@@ -35,6 +35,14 @@ type Room  = {
     amenities: { [key: string]: boolean },
     descriptionShort: DescriptionShort
 }
+type CheckoutModal = {
+  toggleCheckout?: boolean,
+  name?: string,
+  tel?: string,
+  startDate?: string,
+  endDate?: string,
+  date?:[],
+}
 interface Booking {
   name: string;
   tel:  string;
@@ -57,18 +65,33 @@ interface DescriptionShort {
 
 export default function Room() {
   const [swiperModal, setSwiperModal] = useState<{toggleModal: boolean, swiperIndex?: number}>({toggleModal: false, swiperIndex:1})
-  const [checkoutModal, setCheckoutModal] = useState({toggleCheckout: false})
-  const { id } = useParams();
-
-  const { baseUrl } = useApi()
-  const { data }: Data|any = useFetch(`${baseUrl}/room/${id}`)
-  const [inputValue, setInputValue] = useInputValue({
+  const [checkoutModal, setCheckoutModal] = useState<CheckoutModal>({
+    toggleCheckout: false,
     name: "",
     tel: "",
     startDate: "",
     endDate: "",
     date:[],
-  });
+  })
+  console.log(checkoutModal)
+
+  const { id } = useParams();
+  const { baseUrl } = useApi()
+  const { data }: Data|any = useFetch(`${baseUrl}/room/${id}`)
+
+  const onBookingNow = () => {
+    setCheckoutModal((preState: object) => {return {...preState, toggleCheckout: true}})
+    
+  }
+  
+  // const [inputValue, setInputValue] = useInputValue({
+  //   name: "",
+  //   tel: "",
+  //   startDate: "",
+  //   endDate: "",
+  //   date:[],
+  // });
+  // console.log(inputValue)
 
   if (Object.keys(data).length === 0) return <p>Loading...</p>;
   return (
@@ -83,7 +106,7 @@ export default function Room() {
             $1,380 <span className="px-4 text-xl">/</span>
             <span className="text-xl">1晚</span>
           </p>
-          <button onClick={() => setCheckoutModal({toggleCheckout: true})} className="pointer-events-auto bg-primary py-2 px-14 text-white">
+          <button onClick={() => onBookingNow()} className="pointer-events-auto bg-primary py-2 px-14 text-white">
             Booking now
           </button>
         </div>
@@ -215,11 +238,11 @@ export default function Room() {
         })}
         <div className="pt-10 pb-14">
         <p className="text-xs text-primary mb-2">空房狀態查詢</p>
-        <DatepickerHasRrange data={data} setInputValue={setInputValue} />
+        <DatepickerHasRrange data={data} setCheckoutModal={setCheckoutModal} />
         </div>
       </section>
     </div>
-    {checkoutModal.toggleCheckout && <Checkout data={data} setCheckoutModal={setCheckoutModal}/>}
+    {checkoutModal.toggleCheckout && <Checkout data={data} checkoutModal={checkoutModal} setCheckoutModal={setCheckoutModal}/>}
     </>
   );
 }

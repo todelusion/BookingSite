@@ -42,7 +42,7 @@ interface DescriptionShort {
   Footage:        number;
 }
 
-function DatepickerHasRrange({ data, setInputValue }: Data | any) {
+function DatepickerHasRrange({ data, setCheckoutModal }: Data | any) {
   const [state, setState] = useState([
     {
       startDate: new Date(),
@@ -51,38 +51,59 @@ function DatepickerHasRrange({ data, setInputValue }: Data | any) {
     },
 
   ]);
-  const handleDate = () => {
+
+  const handleDate = (item: { selection: { startDate: Date; endDate: Date; key: string; }; }) => {
+    
+    const { startDate, endDate, key } = item.selection
     const getDaysArray = function(start: string | number | Date, end: string | number | Date) {
       for(var arr=[],dt=new Date(start); dt<=new Date(end); dt.setDate(dt.getDate()+1)){
-          arr.push(new Date(dt));
+        arr.push(new Date(dt));
       }
       return arr;
     };
-    const _dateList = getDaysArray(state[0].startDate , state[0].endDate)
+    const _dateList = getDaysArray(startDate , endDate)
     const dateList = _dateList.map(date => format(date, 'Y-MM-d'))
+    
+
     return dateList
   }
-  //僅起點與終點
-  console.log(state)
 
-
+  // console.log('僅起點與終點，用於設定DateRangePicker的ranges props', state)
+  
+  const onDateChange = (item: { selection: { startDate: Date; endDate: Date; key: string; }; }) => {
+    const { startDate, endDate } = item.selection
+    setState([item.selection])
+    console.log('算出起終點內部天數', handleDate(item))
+    setCheckoutModal((prevState: object) => {
+      return{
+        ...prevState,
+        startDate: format(startDate, 'Y-MM-dd'),
+        endDate: format(endDate, 'Y-MM-dd')        
+      }
+    })
+    
+  }
+  
+  
   //起始與終點內經過的天數
-  console.log(handleDate())
-
+  
   //移除sidebar白底
   useEffect(() => {
     // console.log(document.getElementsByClassName('rdrDefinedRangesWrapper')[0].__proto__)
     (document.getElementsByClassName("rdrDefinedRangesWrapper")[0] as HTMLElement) .style.display = "none";
     (document.getElementsByClassName("rdrDateDisplayWrapper")[0] as HTMLElement).style.display =
-      "none";
+    "none";
     [...(document.getElementsByClassName("rdrMonthName") as any)].forEach(div => div.style.display = "none")
-  
+
+    // setCheckoutModal({startDate: state[0].startDate, endDate: state[0].endDate})
+    // console.log(handleDate())
+    
   }, []);
 
   
   return (
     <DateRangePicker
-      onChange={(item: any) => setState([item.selection])}
+      onChange={(item: any) => onDateChange(item)}
       moveRangeOnFirstSelection={false}
       showMonthAndYearPickers = {false}
       months={2}

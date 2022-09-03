@@ -13,6 +13,9 @@ type DatePickerProps = {
   onChange: (time: { timestamp: number; dateString: string }) => {};
 };
 
+//setDateToInput()將datepicker選到的日期帶入input標籤內
+//在HTML標籤使用ref={inputRef}綁定標籤
+
 const DatePicker = ({ onChange }: DatePickerProps) => {
   const inputRef = useRef<HTMLInputElement>(null!);
   const daysMap = [

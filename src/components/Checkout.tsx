@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 import { Breakfast, AirConditioner, MiniBar, RoomService, WiFi, ChildFriendly, Television, Refrigerator, Sofa, Smoke, PetFriendly, GreatView } from '../assets/icon/Icon'
 import { flow1, flow2, flow3, arrow } from '../assets/flow/Flow'
@@ -19,6 +19,14 @@ type Data = {
     amenities: { [key: string]: boolean },
     descriptionShort: DescriptionShort
 }
+type CheckoutModal = {
+    toggleCheckout?: boolean,
+    name?: string,
+    tel?: string,
+    startDate: string,
+    endDate: string,
+    date?:[],
+  }
 interface CheckInAndOut {
     checkInEarly: string;
     checkInLate:  string;
@@ -33,14 +41,23 @@ Footage:        number;
 }
 
 
-export default function Checkout({ data, setCheckoutModal }: Data|any) {
+export default function Checkout({ data, checkoutModal ,setCheckoutModal }: Data|any) {
     const startDateRef = useRef<HTMLInputElement>(null!)
     const endDateRef = useRef<HTMLInputElement>(null!)
-
-    console.log(startDateRef)
-    console.log(endDateRef)
+    const {startDate, endDate}: CheckoutModal = checkoutModal
+    // console.log([startDate, endDate])
+    // console.log([startDateRef, endDateRef])
     
-    console.log(data)
+    const setDateToInput = () => {
+        console.log([startDateRef, endDateRef])
+        startDateRef.current.value = startDate
+        endDateRef.current.value = endDate
+    }
+    useEffect(() => {
+        setDateToInput()
+    }, [])
+
+
   return (
     <div className='absolute w-full min-h-screen top-0 z-10 flex justify-center items-center backdrop-contrast-50 bg-white/60  py-10'>
         <div className='border-2 border-primary flex'>
@@ -84,7 +101,7 @@ export default function Checkout({ data, setCheckoutModal }: Data|any) {
                             <li>退房時間：{item.checkInAndOut.checkOut}</li> 
                         </ul>
                         <p className="text-sm tracking-wider text-primary/80 leading-5 mb-11">{item.description}</p>
-                        <ul className="mb-6 grid grid-cols-7 gap-x-9 max-w-[635px] gap-y-6 items-end justify-items-center">
+                        <ul className="whitespace-nowrap mb-6 grid grid-cols-7 gap-x-9 max-w-[635px] gap-y-6 items-end justify-items-center">
                             <li className={`${item.amenities.Breakfast ? 'opacity-100' : 'hidden'} relative content-between`}>
                             <img src={Breakfast} alt="Breakfast" />
                             <p className='text-xs text-second text-center pt-2'>早餐</p>
@@ -170,7 +187,7 @@ export default function Checkout({ data, setCheckoutModal }: Data|any) {
                     </li>
                 </ul>
             </div>
-            <button onClick={() => setCheckoutModal({toggleCheckout: false})} className='absolute right-10 top-7 text-3xl font-light'>X</button>
+            <button onClick={() => setCheckoutModal((preState: object) => {return {...preState, toggleCheckout: false}})} className='absolute right-10 top-7 text-3xl font-light'>X</button>
             </section>
         </div>
     </div>

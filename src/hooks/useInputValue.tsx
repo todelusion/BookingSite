@@ -2,7 +2,10 @@ import { useState } from "react";
 type Checkout = {
   name?: string,
   tel?:  string,
-  date?: string[]
+  startDate?: string,
+  endDate?: string,
+  date?: string[],
+
 }
 
 export default function useInputValue({}) {
