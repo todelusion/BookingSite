@@ -23,6 +23,18 @@ type Room  = {
     amenities: { [key: string]: boolean },
     descriptionShort: DescriptionShort
 }
+type CheckoutModal = {
+  toggleCheckout?: boolean,
+  name?: string,
+  tel?: string,
+  startDate: Date | string,
+  endDate: Date | string,
+  date?:[],
+  dateType?: {
+    holiday: number,
+    normalday: number
+  }
+}
 interface Booking {
   name: string;
   tel:  string;
@@ -42,19 +54,15 @@ interface DescriptionShort {
   Footage:        number;
 }
 
-function DatepickerHasRrange({ data, setCheckoutModal }: Data | any) {
-  const [state, setState] = useState([
-    {
-      startDate: new Date(),
-      endDate: addDays(new Date(), 7),
-      key: "selection",
-    },
-
-  ]);
+function DatepickerHasRrange({ data, checkoutModal, setCheckoutModal }: Data | any) {
+  // console.log(checkoutModal)
+  const { startDate, endDate }: CheckoutModal = checkoutModal
 
   const handleDate = (item: { selection: { startDate: Date; endDate: Date; key: string; }; }) => {
     
-    const { startDate, endDate, key } = item.selection
+    const { startDate, endDate } = item.selection
+    startDate.setHours(0)
+    // console.log({startDate, endDate})
     const getDaysArray = function(start: string | number | Date, end: string | number | Date) {
       for(var arr=[],dt=new Date(start); dt<=new Date(end); dt.setDate(dt.getDate()+1)){
         arr.push(new Date(dt));
@@ -90,7 +98,7 @@ function DatepickerHasRrange({ data, setCheckoutModal }: Data | any) {
 
     const { startDate, endDate } = item.selection
     const { dateList, dateType } = handleDate(item)
-    setState([item.selection])
+    // setState([item.selection])
     setCheckoutModal((prevState: object) => {
       return{
         ...prevState,
@@ -113,11 +121,19 @@ function DatepickerHasRrange({ data, setCheckoutModal }: Data | any) {
     (document.getElementsByClassName("rdrDateDisplayWrapper")[0] as HTMLElement).style.display =
     "none";
     [...(document.getElementsByClassName("rdrMonthName") as any)].forEach(div => div.style.display = "none")
-
+    
+    // if(checkoutModal){
+    //   setState([{
+    //     startDate: new Date(checkoutModal.startDate),
+    //     endDate: new Date(checkoutModal.endDate),
+    //     key: "selection",
+    //   }])
+    // }
     // setCheckoutModal({startDate: state[0].startDate, endDate: state[0].endDate})
     // console.log(handleDate())
     
   }, []);
+
 
   
   return (
@@ -128,7 +144,11 @@ function DatepickerHasRrange({ data, setCheckoutModal }: Data | any) {
       months={2}
       minDate={new Date()}
       rangeColors={["#38470B", "#949C7C"]}
-      ranges={state}
+      ranges={[{
+        startDate: new Date(startDate),
+        endDate: new Date(endDate),
+        key: "selection",
+      }]}
       direction="horizontal"
       monthDisplayFormat="yyyy / M"
       

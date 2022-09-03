@@ -3,6 +3,7 @@ import { Calendar } from 'react-date-range';
 
 import { Breakfast, AirConditioner, MiniBar, RoomService, WiFi, ChildFriendly, Television, Refrigerator, Sofa, Smoke, PetFriendly, GreatView } from '../assets/icon/Icon'
 import { flow1, flow2, flow3, arrow } from '../assets/flow/Flow'
+import { format } from 'date-fns';
 
 type Data = {
     success?: boolean;
@@ -44,29 +45,148 @@ Bed:            string[];
 "Private-Bath": number;
 Footage:        number;
 }
+interface Booking {
+    name: string;
+    tel:  string;
+    date: Date;
+  }
+  
 
 
 export default function Checkout({ data, checkoutModal ,setCheckoutModal }: Data|any) {
-    const [singleDate, setSingleDate] = useState(null!);
+    const [state, setState] = useState({
+        startDate: new Date(),
+        endDate: new Date(),
+        toggleStartCalendar: false,
+        toggleEndCalendar: false
+    });
     const startDateRef = useRef<HTMLInputElement>(null!)
     const endDateRef = useRef<HTMLInputElement>(null!)
     const {startDate, endDate, date, dateType}: CheckoutModal = checkoutModal
     // console.log([startDate, endDate])
-    // console.log([startDateRef, endDateRef])
-    console.log(singleDate)
+    console.log(checkoutModal)
     
+    const handleDate = (startDate: Date, endDate: Date) => {
+
+        const getDaysArray = function(start: string | number | Date, end: string | number | Date) {
+          for(var arr=[],dt=new Date(start); dt<=new Date(end); dt.setDate(dt.getDate()+1)){
+            arr.push(new Date(dt));
+          }
+          return arr;
+        };
+        const _dateList = getDaysArray(startDate , endDate)
+
+        _dateList.pop()
+        
+        const dateList = _dateList.map(date => format(date, 'Y-MM-dd'))
+        const dateType = _dateList.reduce((init:{holiday: number, normalday: number} , date) => {
+          if([5, 6, 0].includes(date.getDay())){
+            // console.log(date.getDay())
+            init.holiday++
+          }else{
+            init.normalday++
+          }
+          return init
+        }
+        ,{holiday: 0, normalday: 0})
+        // console.log(dateType)
+        
+        return { dateList, dateType }
+    }
+
+    // const setDateInterval = () => {
+    //     console.log(checkoutModal)
+    //     const { dateList : _dateList, dateType : _dateType } = handleDate(checkoutModal)
+    //     setCheckoutModal((prevState: object) => {
+    //         return{
+    //           ...prevState,
+    //           date: _dateList,
+    //           dateType: _dateType
+    //         }
+    //       })
+
+    // }
+    
+    const onCalender = (item: Date) =>{
+        const _startDate = new Date(startDate)
+        _startDate.setHours(0)
+        const _endDate = new Date(endDate)
+        _endDate.setHours(0)
+
+        if(state.toggleStartCalendar){
+            const _startDateTimestamp = item.getTime()
+            const { dateList, dateType } = handleDate(item, _endDate)
+            if(_startDateTimestamp >= _endDate.getTime())return
+            setCheckoutModal((prevState: any) => {return{
+                ...prevState, 
+                startDate: format(item, 'Y-MM-dd'),
+                date: dateList,
+                dateType: dateType,
+            }
+            
+            })
+            startDateRef.current.value =  format(item, 'Y-MM-dd')
+
+            
+
+            setState((prevState) => {
+                return{
+                    ...prevState,
+                    startDate: item,
+                    toggleStartCalendar: false
+                }
+            })
+            }
+
+        if(state.toggleEndCalendar){
+            const _endDateTimestamp = item.getTime()
+            if(_endDateTimestamp <= Date.parse(startDate))return
+            setCheckoutModal((prevState: any) => {return{
+                ...prevState, 
+                endDate: format(item, 'Y-MM-dd'),
+                date: dateList,
+                dateType: dateType,
+            }})
+            endDateRef.current.value =  format(item, 'Y-MM-dd')
+
+            const { dateList, dateType } = handleDate(_startDate, item)
+            setState((prevState) => {
+                return{
+                    ...prevState,
+                    endDate: item,
+                    toggleEndCalendar: false
+                }
+            })
+        }
+
+        
+    }
+
+
     const setDateToInput = () => {
-        console.log([startDateRef, endDateRef])
+        // console.log([startDateRef, endDateRef])
         startDateRef.current.value = startDate
         endDateRef.current.value = endDate
     }
+
+    const onContainer = () => {
+        if(state.toggleStartCalendar){
+            setState((prevState) => {return{...prevState, toggleStartCalendar: false}})
+        }
+        
+        if(state.toggleEndCalendar){
+            setState((prevState) => {return{...prevState, toggleEndCalendar: false}})
+        }
+    }
+
     useEffect(() => {
         setDateToInput()
     }, [])
+    
 
 
   return (
-    <div className='absolute w-full min-h-screen top-0 z-10 flex justify-center items-center backdrop-contrast-50 bg-white/60  py-10'>
+    <div onClick={() => onContainer()} className='absolute w-full min-h-screen top-0 z-10 flex justify-center items-center backdrop-contrast-50 bg-white/60  py-10'>
         <div className='border-2 border-primary flex'>
             <section className='flex flex-col px-16 pt-12 pb-7 bg-primary max-w-md w-full'>
                 <form className='text-white font-light max-w-xs w-full'>
@@ -80,18 +200,34 @@ export default function Checkout({ data, checkoutModal ,setCheckoutModal }: Data
                     </label>
                     <label className='relative'>
                         入住日期
-                        <input ref={startDateRef} name='startDate' type="date" className='text-primary px-2 py-2 tracking-widest  block outline-none mt-2 mb-4 w-full'/>
-                        <div className='absolute top-12 left-0 border-black'>
+                        <input onClick={() => setState((prevState) => {return{...prevState, toggleStartCalendar: true}})} ref={startDateRef} name='startDate' type="date" className='text-primary px-2 py-2 tracking-widest  block outline-none mt-2 mb-4 w-full'/>
+                        {state.toggleStartCalendar && <div className='absolute top-12 left-0 border-black z-10'>
                             <Calendar 
-                                onChange={(item: any) => setSingleDate(item)}
-                                date={singleDate}
+                                onChange={(item: any) => onCalender(item)}
+                                date={new Date(startDate)}
                                 className='max-w-xs pb-5'
+                                color='#38470B'
+                                disabledDates={data.booking.map((item: Booking) => new Date(item.date))}
+                                minDate={new Date()}
                             />
-                        </div>
+                        </div>}
                     </label>
-                    <label>
+                    <label className='relative'>
                         退房日期
-                        <input ref={endDateRef} name='endDate' type="date" className='text-primary px-2 py-2 tracking-widest  block outline-none mt-2 mb-4 w-full'/>
+                        <input 
+                        onClick={() => setState((prevState) => {return{...prevState, toggleEndCalendar: true}})}
+                        ref={endDateRef} name='endDate' type="date" className='text-primary px-2 py-2 tracking-widest  block outline-none mt-2 mb-4 w-full'/>
+
+                        {state.toggleEndCalendar && <div className='absolute top-12 left-0 border-black'>
+                            <Calendar 
+                                onChange={(item: any) => onCalender(item)}
+                                date={new Date(endDate)}
+                                className='max-w-xs pb-5'
+                                color='#38470B'
+                                disabledDates={data.booking.map((item: Booking) => new Date(item.date))}
+                                minDate={new Date()}
+                            />
+                        </div>}
                     </label>
                 </form>
                 <p className='text-second mb-3'>{date?.length}晚（包括{dateType?.normalday}晚平日，{dateType?.holiday}晚假日）</p>

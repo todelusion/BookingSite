@@ -39,8 +39,8 @@ type CheckoutModal = {
   toggleCheckout?: boolean,
   name?: string,
   tel?: string,
-  startDate?: string,
-  endDate?: string,
+  startDate?: Date | string,
+  endDate?: Date | string,
   date?:[],
   dateType?: {
     holiday: number,
@@ -73,8 +73,8 @@ export default function Room() {
     toggleCheckout: false,
     name: "",
     tel: "",
-    startDate: "",
-    endDate: "",
+    startDate: new Date(),
+    endDate: new Date(),
     date:[],
     dateType: {
       holiday: 0,
@@ -253,13 +253,13 @@ export default function Room() {
         })}
         <div className="pt-10 pb-14">
         <p className="text-xs text-primary mb-2">空房狀態查詢
-        {checkoutModal.startDate === checkoutModal.endDate && <span className="text-red-600 font-bold ml-5">請選擇退房日</span>}
+        {(checkoutModal.startDate === checkoutModal.endDate) && <span className="text-red-600 font-bold ml-5">請選擇退房日</span>}
         </p>
-        <DatepickerHasRrange data={data} setCheckoutModal={setCheckoutModal} />
+        <DatepickerHasRrange data={data} checkoutModal={checkoutModal} setCheckoutModal={setCheckoutModal} />
         </div>
       </section>
     </div>
-    {checkoutModal.toggleCheckout && checkoutModal.startDate !== checkoutModal.endDate && <Checkout data={data} checkoutModal={checkoutModal} setCheckoutModal={setCheckoutModal}/>
+    {checkoutModal.toggleCheckout && <Checkout data={data} checkoutModal={checkoutModal} setCheckoutModal={setCheckoutModal}/>
     }
     </>
   );
