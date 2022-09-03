@@ -42,6 +42,10 @@ type CheckoutModal = {
   startDate?: string,
   endDate?: string,
   date?:[],
+  dateType?: {
+    holiday: number,
+    normalday: number
+  }
 }
 interface Booking {
   name: string;
@@ -72,16 +76,24 @@ export default function Room() {
     startDate: "",
     endDate: "",
     date:[],
+    dateType: {
+      holiday: 0,
+      normalday: 0
+    }
   })
   console.log(checkoutModal)
 
   const { id } = useParams();
   const { baseUrl } = useApi()
   const { data }: Data|any = useFetch(`${baseUrl}/room/${id}`)
+  // console.log(data)
 
   const onBookingNow = () => {
-    setCheckoutModal((preState: object) => {return {...preState, toggleCheckout: true}})
-    
+    if(checkoutModal.startDate === checkoutModal.endDate){
+      alert('請選擇退房日')
+    }else{
+      setCheckoutModal((preState: object) => {return {...preState, toggleCheckout: true}})
+    }
   }
   
   // const [inputValue, setInputValue] = useInputValue({
@@ -103,7 +115,10 @@ export default function Room() {
           <button className="absolute top-24 left-32 text-primary font-light flex items-center"><img src={arrow} className='rotate-180 mr-2'/> 查看其他房型</button>
           </Link>
           <p className="mb-4 text-center text-4xl text-primary">
-            $1,380 <span className="px-4 text-xl">/</span>
+            {
+            checkoutModal.dateType === undefined ? '尚未選取' : 
+            ((data.room[0] as Room).normalDayPrice * checkoutModal.dateType.normalday) + ((data.room[0] as Room).holidayPrice * checkoutModal.dateType.holiday)
+            } <span className="px-4 text-xl">/</span>
             <span className="text-xl">1晚</span>
           </p>
           <button onClick={() => onBookingNow()} className="pointer-events-auto bg-primary py-2 px-14 text-white">
@@ -237,12 +252,15 @@ export default function Room() {
           )
         })}
         <div className="pt-10 pb-14">
-        <p className="text-xs text-primary mb-2">空房狀態查詢</p>
+        <p className="text-xs text-primary mb-2">空房狀態查詢
+        {checkoutModal.startDate === checkoutModal.endDate && <span className="text-red-600 font-bold ml-5">請選擇退房日</span>}
+        </p>
         <DatepickerHasRrange data={data} setCheckoutModal={setCheckoutModal} />
         </div>
       </section>
     </div>
-    {checkoutModal.toggleCheckout && <Checkout data={data} checkoutModal={checkoutModal} setCheckoutModal={setCheckoutModal}/>}
+    {checkoutModal.toggleCheckout && checkoutModal.startDate !== checkoutModal.endDate && <Checkout data={data} checkoutModal={checkoutModal} setCheckoutModal={setCheckoutModal}/>
+    }
     </>
   );
 }

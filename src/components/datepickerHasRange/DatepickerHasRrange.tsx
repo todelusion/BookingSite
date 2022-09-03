@@ -62,23 +62,42 @@ function DatepickerHasRrange({ data, setCheckoutModal }: Data | any) {
       return arr;
     };
     const _dateList = getDaysArray(startDate , endDate)
-    const dateList = _dateList.map(date => format(date, 'Y-MM-d'))
-    
 
-    return dateList
+    _dateList.pop()
+    
+    const dateList = _dateList.map(date => format(date, 'Y-MM-dd'))
+    const dateType = _dateList.reduce((init:{holiday: number, normalday: number} , date) => {
+      if([5, 6, 0].includes(date.getDay())){
+        // console.log(date.getDay())
+        init.holiday++
+      }else{
+        init.normalday++
+      }
+      return init
+    }
+    ,{holiday: 0, normalday: 0})
+    // console.log(dateType)
+    
+  
+
+    return { dateList, dateType }
   }
 
   // console.log('僅起點與終點，用於設定DateRangePicker的ranges props', state)
   
   const onDateChange = (item: { selection: { startDate: Date; endDate: Date; key: string; }; }) => {
+    // console.log('算出起終點內部天數', handleDate(item))
+
     const { startDate, endDate } = item.selection
+    const { dateList, dateType } = handleDate(item)
     setState([item.selection])
-    console.log('算出起終點內部天數', handleDate(item))
     setCheckoutModal((prevState: object) => {
       return{
         ...prevState,
+        date: dateList,
         startDate: format(startDate, 'Y-MM-dd'),
-        endDate: format(endDate, 'Y-MM-dd')        
+        endDate: format(endDate, 'Y-MM-dd'),
+        dateType: dateType
       }
     })
     
