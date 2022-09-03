@@ -115,11 +115,11 @@ export default function Room() {
           <button className="absolute top-24 left-32 text-primary font-light flex items-center"><img src={arrow} className='rotate-180 mr-2'/> 查看其他房型</button>
           </Link>
           <p className="mb-4 text-center text-4xl text-primary">
-            {
+            ${
             checkoutModal.dateType === undefined ? '尚未選取' : 
             ((data.room[0] as Room).normalDayPrice * checkoutModal.dateType.normalday) + ((data.room[0] as Room).holidayPrice * checkoutModal.dateType.holiday)
-            } <span className="px-4 text-xl">/</span>
-            <span className="text-xl">1晚</span>
+            }<span className="px-4 text-xl">/</span>
+            <span className="text-xl">{checkoutModal.date?.length}晚</span>
           </p>
           <button onClick={() => onBookingNow()} className="pointer-events-auto bg-primary py-2 px-14 text-white">
             Booking now

@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import { Calendar } from 'react-date-range';
 
 import { Breakfast, AirConditioner, MiniBar, RoomService, WiFi, ChildFriendly, Television, Refrigerator, Sofa, Smoke, PetFriendly, GreatView } from '../assets/icon/Icon'
 import { flow1, flow2, flow3, arrow } from '../assets/flow/Flow'
@@ -26,6 +27,10 @@ type CheckoutModal = {
     startDate: string,
     endDate: string,
     date?:[],
+    dateType?: {
+        holiday: number,
+        normalday: number
+      }
   }
 interface CheckInAndOut {
     checkInEarly: string;
@@ -42,11 +47,13 @@ Footage:        number;
 
 
 export default function Checkout({ data, checkoutModal ,setCheckoutModal }: Data|any) {
+    const [singleDate, setSingleDate] = useState(null!);
     const startDateRef = useRef<HTMLInputElement>(null!)
     const endDateRef = useRef<HTMLInputElement>(null!)
-    const {startDate, endDate}: CheckoutModal = checkoutModal
+    const {startDate, endDate, date, dateType}: CheckoutModal = checkoutModal
     // console.log([startDate, endDate])
     // console.log([startDateRef, endDateRef])
+    console.log(singleDate)
     
     const setDateToInput = () => {
         console.log([startDateRef, endDateRef])
@@ -65,26 +72,36 @@ export default function Checkout({ data, checkoutModal ,setCheckoutModal }: Data
                 <form className='text-white font-light max-w-xs w-full'>
                     <label>
                         姓名
-                        <input name='name' type="text" className='text-black block outline-none mt-2 mb-4 w-full'/>
+                        <input name='name' type="text" className='text-primary px-2 py-2 tracking-widest  block outline-none mt-2 mb-4 w-full'/>
                     </label>
                     <label>
                         手機號碼
-                        <input name='phone' type="text" className='text-black block outline-none mt-2 mb-4 w-full'/>
+                        <input name='phone' type="text" className='text-primary px-2 py-2 tracking-widest  block outline-none mt-2 mb-4 w-full'/>
                     </label>
-                    <label>
+                    <label className='relative'>
                         入住日期
-                        <input ref={startDateRef} name='startDate' type="date" className='text-black block outline-none mt-2 mb-4 w-full'/>
+                        <input ref={startDateRef} name='startDate' type="date" className='text-primary px-2 py-2 tracking-widest  block outline-none mt-2 mb-4 w-full'/>
+                        <div className='absolute top-12 left-0 border-black'>
+                            <Calendar 
+                                onChange={(item: any) => setSingleDate(item)}
+                                date={singleDate}
+                                className='max-w-xs pb-5'
+                            />
+                        </div>
                     </label>
                     <label>
                         退房日期
-                        <input ref={endDateRef} name='endDate' type="date" className='text-black block outline-none mt-2 mb-4 w-full'/>
+                        <input ref={endDateRef} name='endDate' type="date" className='text-primary px-2 py-2 tracking-widest  block outline-none mt-2 mb-4 w-full'/>
                     </label>
                 </form>
-                <p className='text-second mb-3'>2天，1晚平日</p>
+                <p className='text-second mb-3'>{date?.length}晚（包括{dateType?.normalday}晚平日，{dateType?.holiday}晚假日）</p>
                 <hr className='border-second mb-2'/>
                 <ul className='text-right text-white font-light mb-5'>
                     <li>總計</li>
-                    <li className='text-2xl font-normal'>$1,380</li>
+                    <li className='text-2xl font-normal tracking-widest'>${
+            checkoutModal.dateType === undefined ? '尚未選取' : 
+            ((data.room[0] as Room).normalDayPrice * checkoutModal.dateType.normalday) + ((data.room[0] as Room).holidayPrice * checkoutModal.dateType.holiday)
+            }</li>
                 </ul>
                 <button className='text-white py-2 px-28 border-[1px] border-second mb-4 hover:bg-white hover:text-primary'>確定送出</button>
                 <p className='text-white text-center text-xs'>此預約系統僅預約功能，並不會對您進行收費</p>
