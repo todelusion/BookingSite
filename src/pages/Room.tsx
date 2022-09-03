@@ -108,11 +108,11 @@ export default function Room() {
   if (Object.keys(data).length === 0) return <p>Loading...</p>;
   return (
     <>
-    <div className="flex h-screen">
-      <section className="relative pointer-events-none flex h-full w-full max-w-xl select-none items-center justify-center">
+    <div className="flex h-screen justify-evenly">
+      <section className="relative pointer-events-none flex h-full w-full select-none items-center justify-center">
         <div className="z-10 mt-32">
           <Link to='/' className="pointer-events-auto">
-          <button className="absolute top-24 left-32 text-primary font-light flex items-center"><img src={arrow} className='rotate-180 mr-2'/> 查看其他房型</button>
+          <button className="absolute top-24 left-10 text-primary font-light flex items-center"><img src={arrow} className='rotate-180 mr-2'/> 查看其他房型</button>
           </Link>
           <p className="mb-4 text-center text-4xl text-primary">
             ${
@@ -129,11 +129,11 @@ export default function Room() {
           pagination={{ clickable: true }}
           modules={[Autoplay, Pagination]}
           autoplay={{ delay: 4000, disableOnInteraction: false }}
-          className="swiper-rooms pointer-events-auto absolute max-w-xl select-none"
+          className="swiper-rooms pointer-events-auto absolute select-none"
         >
           {data.room.map((item: Room) => (
               item.imageUrl.map((image, index) => (
-                <SwiperSlide onClick={() => setSwiperModal({toggleModal: true, swiperIndex: index})}  className="swiper-pseudo blur-sm">
+                <SwiperSlide onClick={() => setSwiperModal({toggleModal: true, swiperIndex: index})}  className="swiper-pseudo">
                   <img src={image}/>
                 </SwiperSlide>
                 ))
@@ -163,7 +163,7 @@ export default function Room() {
         
       </>
       }
-      <section className="flex flex-col pt-10 pl-7 pr-32">
+      <section className="flex flex-col pt-10 ml-20 pr-32 max-w-4xl">
         {data.room.map((item: Room) => {
           return(
             <div key={item.id}>
