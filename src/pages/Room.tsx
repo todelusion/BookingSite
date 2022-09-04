@@ -39,8 +39,8 @@ type CheckoutModal = {
   toggleCheckout?: boolean,
   name?: string,
   tel?: string,
-  startDate?: Date | string,
-  endDate?: Date | string,
+  startDate: Date | string,
+  endDate: Date | string,
   date?:[],
   dateType?: {
     holiday: number,
@@ -81,7 +81,6 @@ export default function Room() {
       normalday: 0
     }
   })
-  console.log(checkoutModal)
 
   const { id } = useParams();
   const { baseUrl } = useApi()
@@ -89,10 +88,10 @@ export default function Room() {
   // console.log(data)
 
   const onBookingNow = () => {
-    if(checkoutModal.startDate === checkoutModal.endDate){
+    if(new Date(checkoutModal.startDate).getTime() === new Date(checkoutModal.endDate).getTime()){
       alert('請選擇退房日')
     }else{
-      setCheckoutModal((preState: object) => {return {...preState, toggleCheckout: true}})
+      setCheckoutModal((preState) => {return {...preState, toggleCheckout: true}})
     }
   }
   
@@ -253,7 +252,7 @@ export default function Room() {
         })}
         <div className="pt-10 pb-14">
         <p className="text-xs text-primary mb-2">空房狀態查詢
-        {(checkoutModal.startDate === checkoutModal.endDate) && <span className="text-red-600 font-bold ml-5">請選擇退房日</span>}
+        {new Date(checkoutModal.startDate).getTime() === new Date(checkoutModal.endDate).getTime() && <span className="text-red-600 font-bold ml-5">請選擇退房日</span>}
         </p>
         <DatepickerHasRrange data={data} checkoutModal={checkoutModal} setCheckoutModal={setCheckoutModal} />
         </div>

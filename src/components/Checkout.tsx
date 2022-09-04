@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Calendar } from 'react-date-range';
+import { useForm } from 'react-hook-form';
+
 
 import { Breakfast, AirConditioner, MiniBar, RoomService, WiFi, ChildFriendly, Television, Refrigerator, Sofa, Smoke, PetFriendly, GreatView } from '../assets/icon/Icon'
 import { flow1, flow2, flow3, arrow } from '../assets/flow/Flow'
@@ -60,11 +62,18 @@ export default function Checkout({ data, checkoutModal ,setCheckoutModal }: Data
         toggleStartCalendar: false,
         toggleEndCalendar: false
     });
+    const { register, watch } = useForm({
+        defaultValues: {
+            name: "",
+            tel: ""
+        }
+    })
+
     const startDateRef = useRef<HTMLInputElement>(null!)
     const endDateRef = useRef<HTMLInputElement>(null!)
     const {startDate, endDate, date, dateType}: CheckoutModal = checkoutModal
     // console.log([startDate, endDate])
-    console.log(checkoutModal)
+    // console.log(checkoutModal)
     
     const handleDate = (startDate: Date, endDate: Date) => {
 
@@ -116,7 +125,10 @@ export default function Checkout({ data, checkoutModal ,setCheckoutModal }: Data
         if(state.toggleStartCalendar){
             const _startDateTimestamp = item.getTime()
             const { dateList, dateType } = handleDate(item, _endDate)
-            if(_startDateTimestamp >= _endDate.getTime())return
+            if(_startDateTimestamp >= _endDate.getTime()){
+                alert('不可晚於退房日')
+                return
+            }
             setCheckoutModal((prevState: any) => {return{
                 ...prevState, 
                 startDate: format(item, 'Y-MM-dd'),
@@ -140,7 +152,10 @@ export default function Checkout({ data, checkoutModal ,setCheckoutModal }: Data
 
         if(state.toggleEndCalendar){
             const _endDateTimestamp = item.getTime()
-            if(_endDateTimestamp <= Date.parse(startDate))return
+            if(_endDateTimestamp <= Date.parse(startDate)){
+                alert('不可早於入住日')
+                return
+            }
             setCheckoutModal((prevState: any) => {return{
                 ...prevState, 
                 endDate: format(item, 'Y-MM-dd'),
@@ -182,7 +197,8 @@ export default function Checkout({ data, checkoutModal ,setCheckoutModal }: Data
     useEffect(() => {
         setDateToInput()
     }, [])
-    
+    // console.log(watch("name").length)
+    // console.log(isNaN(Number(watch("tel"))))
 
 
   return (
@@ -192,11 +208,14 @@ export default function Checkout({ data, checkoutModal ,setCheckoutModal }: Data
                 <form className='text-white font-light max-w-xs w-full'>
                     <label>
                         姓名
-                        <input name='name' type="text" className='text-primary px-2 py-2 tracking-widest  block outline-none mt-2 mb-4 w-full'/>
+                        {watch("name").length < 1 && <span className='ml-2 text-red-300 text-xs font-medium'>姓名必填</span>}
+                        <input {...register("name")} type="text" className='text-primary px-2 py-2 tracking-widest  block outline-none mt-2 mb-4 w-full'/>
                     </label>
                     <label>
                         手機號碼
-                        <input name='phone' type="text" className='text-primary px-2 py-2 tracking-widest  block outline-none mt-2 mb-4 w-full'/>
+                        {watch("tel").length < 1 && <span className='ml-2 text-red-300 text-xs font-medium'>電話必填</span>}
+                        {(isNaN(Number(watch("tel")))) && <span className='ml-2 text-red-300 text-xs font-medium'>電話格式錯誤</span>}
+                        <input {...register("tel")} type="text" className='text-primary px-2 py-2 tracking-widest  block outline-none mt-2 mb-4 w-full'/>
                     </label>
                     <label className='relative'>
                         入住日期

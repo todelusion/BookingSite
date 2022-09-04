@@ -121,6 +121,9 @@ button > .rdrEndEdge {
 button > .rdrInRange {
   color: #D7DACE !important;
 }
+.rdrDayDisabled > .rdrDayNumber > span {
+  text-decoration-line: line-through
+}
 .rdrDayToday > .rdrDayNumber > span:after{
   background: rgb(56, 71, 11);
 }
