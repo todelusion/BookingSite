@@ -10,13 +10,6 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [
     react(),
-    // alias()
   ],
-  // resolve: {
-  //   alias: {
-  //     "../Calendar": resolve(projectRootDir, "src/components/datepickerHasRange/Calendar/index.js"),
-  //   },
-  // },
+  base: '/RocketTeam-10th/'
 })
-// '../Calendar'
-// 'src/components/datepickerHasRange/Calendar/index.js'
