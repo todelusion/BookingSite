@@ -8,6 +8,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import houseIcon from "../assets/houseIcon.svg";
 import styled from "@emotion/styled";
+import Loading from '../components/Loading'
 
 interface Data {
   success?: boolean;
@@ -34,7 +35,11 @@ interface Item {
 export default function Home() {
   const baseUrl = useApi().baseUrl;
   const { data } = useFetch(`${baseUrl}/rooms`);
-  if (Object.keys(data).length === 0) return <p>Loading</p>;
+  if (Object.keys(data).length === 0) return(
+    <div className="w-full h-screen bg-second flex justify-center items-center">
+    <Loading />
+  </div>
+  );
   console.log(data);
 
   return (

@@ -130,4 +130,16 @@ button > .rdrInRange {
 .rdrDateRangeWrapper {
   border: 1px solid #38470B;
 }
+.show {
+  visibility: visible;
+  opacity: 1;
+  transition: 0.2s ease-in;
+}
+
+.close {
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.2s ease-out;
+}
+
 

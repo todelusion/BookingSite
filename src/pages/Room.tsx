@@ -10,11 +10,15 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-import { Breakfast, AirConditioner, MiniBar, RoomService, WiFi, ChildFriendly, Television, Refrigerator, Sofa, Smoke, PetFriendly, GreatView, Cancel, Ok } from '../assets/icon/Icon'
+import { Breakfast, AirConditioner, MiniBar, RoomService, WiFi, ChildFriendly, Television, Refrigerator, Sofa, Smoke, PetFriendly, GreatView, Cancel, Ok,ResultIcon, Success, Error } from '../assets/icon/Icon'
 import { arrow } from "../assets/flow/Flow";
 
 import DatepickerHasRrange from "../components/datepickerHasRange/DatepickerHasRrange"
 import Checkout from "../components/Checkout"
+
+import useLoading from "../hooks/useLoading"
+import Loading from '../components/Loading'
+import Result from '../components/Result'
 
 
 
@@ -47,6 +51,11 @@ type CheckoutModal = {
     normalday: number
   }
 }
+type isLoading = {
+  isPending: boolean,
+  isError: boolean,
+  isSuccess: boolean,
+}
 interface Booking {
   name: string;
   tel:  string;
@@ -69,6 +78,7 @@ interface DescriptionShort {
 
 export default function Room() {
   const [swiperModal, setSwiperModal] = useState<{toggleModal: boolean, swiperIndex?: number}>({toggleModal: false, swiperIndex:1})
+
   const [checkoutModal, setCheckoutModal] = useState<CheckoutModal>({
     toggleCheckout: false,
     name: "",
@@ -82,9 +92,17 @@ export default function Room() {
     }
   })
 
+  const [isLoading, setIsLoading] = useLoading({
+    isPending: false,
+    isError: false,
+    isSuccess: false,
+  });
+  // console.log(isLoading)
+
   const { id } = useParams();
   const { baseUrl } = useApi()
-  const { data }: Data|any = useFetch(`${baseUrl}/room/${id}`)
+  
+  const [data, setData]: Data|any = useFetch(`${baseUrl}/room/${id}`)
   // console.log(data)
 
   const onBookingNow = () => {
@@ -94,20 +112,15 @@ export default function Room() {
       setCheckoutModal((preState) => {return {...preState, toggleCheckout: true}})
     }
   }
-  
-  // const [inputValue, setInputValue] = useInputValue({
-  //   name: "",
-  //   tel: "",
-  //   startDate: "",
-  //   endDate: "",
-  //   date:[],
-  // });
-  // console.log(inputValue)
 
-  if (Object.keys(data).length === 0) return <p>Loading...</p>;
+  if (Object.keys(data).length === 0) return (
+  <div className="w-full h-screen bg-second flex justify-center items-center">
+    <Loading />
+  </div>
+  );
   return (
     <>
-    <div className="flex h-screen justify-evenly">
+    <div className="flex h-screen justify-evenly bg">
       <section className="relative pointer-events-none flex h-full w-full select-none items-center justify-center">
         <div className="z-10 mt-32">
           <Link to='/' className="pointer-events-auto">
@@ -258,8 +271,25 @@ export default function Room() {
         </div>
       </section>
     </div>
-    {checkoutModal.toggleCheckout && <Checkout data={data} checkoutModal={checkoutModal} setCheckoutModal={setCheckoutModal}/>
+    {checkoutModal.toggleCheckout && <Checkout data={data} checkoutModal={checkoutModal} setCheckoutModal={setCheckoutModal} isLoading={isLoading} setIsLoading={setIsLoading} setData={setData}/>
     }
+      {isLoading.isSuccess && <Result setIsLoading={setIsLoading}>
+        <div className="w-[124px] h-[157px] relative flex justify-center items-center mb-10">
+          <img src={ResultIcon} alt="result" width='124' className="absolute " />
+          <img src={Success} alt="Success" width='52' className="absolute"/>
+        </div>
+        <h3 className="text-white text-5xl font-medium mb-10">預約成功</h3>
+        <p className="font-thin text-lg text-center text-white">請留意簡訊發送訂房通知，入住當日務必出示此訂房通知<br />若未收到簡訊請來電確認，謝謝您</p>
+      </Result>}
+      {isLoading.isError && <Result setIsLoading={setIsLoading}>
+        <div className="w-[124px] h-[157px] relative flex justify-center items-center mb-10">
+          <img src={ResultIcon} alt="result" width='124' className="absolute " />
+          <img src={Error} alt="Error" width='37' className="absolute"/>
+        </div>
+        <h3 className="text-white text-5xl font-medium mb-10">預約失敗</h3>
+        <p className="font-thin text-lg text-center text-white">哎呀！晚了一步！您預約的日期已經被預約走了， 再看看其它房型吧</p>
+      </Result>}
+        <img src={Error} alt="Error" width='50'/>
     </>
   );
 }

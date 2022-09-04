@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Calendar } from 'react-date-range';
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
+import { format } from 'date-fns';
+
+import { useApi } from "../hooks/useApi"
 
 
 import { Breakfast, AirConditioner, MiniBar, RoomService, WiFi, ChildFriendly, Television, Refrigerator, Sofa, Smoke, PetFriendly, GreatView } from '../assets/icon/Icon'
 import { flow1, flow2, flow3, arrow } from '../assets/flow/Flow'
-import { format } from 'date-fns';
+import Loading from './Loading'
+
 
 type Data = {
     success?: boolean;
@@ -29,7 +34,7 @@ type CheckoutModal = {
     tel?: string,
     startDate: string,
     endDate: string,
-    date?:[],
+    date:[],
     dateType?: {
         holiday: number,
         normalday: number
@@ -55,20 +60,22 @@ interface Booking {
   
 
 
-export default function Checkout({ data, checkoutModal ,setCheckoutModal }: Data|any) {
+export default function Checkout({ data, checkoutModal ,setCheckoutModal, isLoading, setIsLoading, setData}: Data|any) {
     const [state, setState] = useState({
         startDate: new Date(),
         endDate: new Date(),
         toggleStartCalendar: false,
         toggleEndCalendar: false
     });
-    const { register, watch } = useForm({
+    const { register, watch, handleSubmit, formState } = useForm({
         defaultValues: {
             name: "",
             tel: ""
         }
     })
+ 
 
+    const { baseUrl, token } = useApi()
     const startDateRef = useRef<HTMLInputElement>(null!)
     const endDateRef = useRef<HTMLInputElement>(null!)
     const {startDate, endDate, date, dateType}: CheckoutModal = checkoutModal
@@ -193,19 +200,57 @@ export default function Checkout({ data, checkoutModal ,setCheckoutModal }: Data
             setState((prevState) => {return{...prevState, toggleEndCalendar: false}})
         }
     }
+    const onSubmit = async(inputData: { name: string; tel: string; }) => {
+        const date = (checkoutModal as CheckoutModal).date
+        // console.log((checkoutModal as CheckoutModal).date)
+        // console.log(inputData)
+        if(!inputData.name || !inputData.tel){
+            alert('資料不得為空')
+            return
+        }
+        if(isNaN(Number(inputData.tel))){
+            alert('電話格式錯誤')
+            return
+        }
+        const config = {
+            headers: { Authorization: (token as string) }
+        }
+        // console.log(config)
+        const obj ={
+            name: inputData.name,
+            tel: inputData.tel,
+            date: date
+        }
+
+        setIsLoading('isPending', true);
+        try{
+            await axios.post(`${baseUrl}/room/${data.room[0].id}`, obj, config)
+            setIsLoading('isPending', false);
+            setIsLoading('isSuccess', true)
+            const res = await axios.get(`${baseUrl}/room/${data.room[0].id}`, config)
+            setData(res.data)
+            setCheckoutModal((prevState: any) => {return{...prevState, toggleCheckout: false}})
+
+        }catch(err){
+            console.log(err)
+            setIsLoading('isPending', false);
+            setIsLoading('isError', true)
+        }
+        
+    }
 
     useEffect(() => {
         setDateToInput()
     }, [])
     // console.log(watch("name").length)
     // console.log(isNaN(Number(watch("tel"))))
-
+    
 
   return (
-    <div onClick={() => onContainer()} className='absolute w-full min-h-screen top-0 z-10 flex justify-center items-center backdrop-contrast-50 bg-white/60  py-10'>
+    <div onClick={() => onContainer()} className='absolute w-full min-h-screen top-0 z-10 flex justify-center items-center bg-white/60  py-10'>
         <div className='border-2 border-primary flex'>
             <section className='flex flex-col px-16 pt-12 pb-7 bg-primary max-w-md w-full'>
-                <form className='text-white font-light max-w-xs w-full'>
+                <form onSubmit={handleSubmit((data) => onSubmit(data))} className='text-white font-light max-w-xs w-full'>
                     <label>
                         姓名
                         {watch("name").length < 1 && <span className='ml-2 text-red-300 text-xs font-medium'>姓名必填</span>}
@@ -248,17 +293,17 @@ export default function Checkout({ data, checkoutModal ,setCheckoutModal }: Data
                             />
                         </div>}
                     </label>
+                    <p className='text-second mb-3'>{date?.length}晚（包括{dateType?.normalday}晚平日，{dateType?.holiday}晚假日）</p>
+                    <hr className='border-second mb-2'/>
+                    <ul className='text-right text-white font-light mb-5'>
+                        <li>總計</li>
+                        <li className='text-2xl font-normal tracking-widest'>${
+                            checkoutModal.dateType === undefined ? '尚未選取' : 
+                            ((data.room[0] as Room).normalDayPrice * checkoutModal.dateType.normalday) + ((data.room[0] as Room).holidayPrice * checkoutModal.dateType.holiday)
+                        }</li>
+                    </ul>
+                    <input type='submit' value='確定送出' className='w-full text-white py-2 px-28 border-[1px] border-second mb-4 hover:bg-white hover:text-primary' />
                 </form>
-                <p className='text-second mb-3'>{date?.length}晚（包括{dateType?.normalday}晚平日，{dateType?.holiday}晚假日）</p>
-                <hr className='border-second mb-2'/>
-                <ul className='text-right text-white font-light mb-5'>
-                    <li>總計</li>
-                    <li className='text-2xl font-normal tracking-widest'>${
-            checkoutModal.dateType === undefined ? '尚未選取' : 
-            ((data.room[0] as Room).normalDayPrice * checkoutModal.dateType.normalday) + ((data.room[0] as Room).holidayPrice * checkoutModal.dateType.holiday)
-            }</li>
-                </ul>
-                <button className='text-white py-2 px-28 border-[1px] border-second mb-4 hover:bg-white hover:text-primary'>確定送出</button>
                 <p className='text-white text-center text-xs'>此預約系統僅預約功能，並不會對您進行收費</p>
             </section>
             <section className='flex flex-col px-8 pt-12 pb-7 bg-white w-full relative'>
@@ -361,6 +406,9 @@ export default function Checkout({ data, checkoutModal ,setCheckoutModal }: Data
             </div>
             <button onClick={() => setCheckoutModal((preState: object) => {return {...preState, toggleCheckout: false}})} className='absolute right-10 top-7 text-3xl font-light'>X</button>
             </section>
+        </div>
+        <div className={`${isLoading['isPending'] === true ? "show" : "close"} absolute`}>
+            <Loading />
         </div>
     </div>
   )

@@ -12,6 +12,9 @@ import Smoke from './surface1-8.svg'
 import GreatView from './surface1-7.svg'
 import Cancel from './icons8-cancel.svg'
 import Ok from './icons8-ok.svg'
+import ResultIcon from './resultIcon.svg'
+import Success from './success.svg'
+import Error from './error.svg'
 
 
 export {AirConditioner,
@@ -27,4 +30,8 @@ export {AirConditioner,
     Smoke,
     GreatView,
     Cancel,
-    Ok}
+    Ok,
+    ResultIcon,
+    Success,
+    Error
+    }
