@@ -6,7 +6,7 @@
 
 @layer base {
   body {
-    @apply box-border bg-white font-sans p-0 m-0;
+    @apply m-0 box-border bg-white p-0 font-sans;
   }
 }
 
@@ -119,16 +119,16 @@ button > .rdrEndEdge {
   color: rgb(148, 156, 124) !important;
 }
 button > .rdrInRange {
-  color: #D7DACE !important;
+  color: #d7dace !important;
 }
 .rdrDayDisabled > .rdrDayNumber > span {
-  text-decoration-line: line-through
+  text-decoration-line: line-through;
 }
-.rdrDayToday > .rdrDayNumber > span:after{
+.rdrDayToday > .rdrDayNumber > span:after {
   background: rgb(56, 71, 11);
 }
 .rdrDateRangeWrapper {
-  border: 1px solid #38470B;
+  border: 1px solid #38470b;
 }
 .show {
   visibility: visible;
@@ -141,5 +141,3 @@ button > .rdrInRange {
   opacity: 0;
   transition: 0.2s ease-out;
 }
-
-

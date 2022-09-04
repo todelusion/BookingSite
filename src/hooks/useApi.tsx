@@ -5,7 +5,7 @@ type api = {
   token?: string;
 };
 
-export const ApiContext = createContext<api>({ baseUrl: "", token:"" });
+export const ApiContext = createContext<api>({ baseUrl: "", token: "" });
 
 export const useApi = () => {
   return useContext(ApiContext);

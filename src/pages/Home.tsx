@@ -8,21 +8,20 @@ import "swiper/css";
 import "swiper/css/pagination";
 import houseIcon from "../assets/houseIcon.svg";
 import styled from "@emotion/styled";
-import Loading from '../components/Loading'
+import Loading from "../components/Loading";
 
 interface Data {
   success?: boolean;
-  items?:   Item[];
+  items?: Item[];
 }
 
 interface Item {
-  id:             string;
-  imageUrl:       string;
+  id: string;
+  imageUrl: string;
   normalDayPrice: number;
-  holidayPrice:   number;
-  name:           string;
+  holidayPrice: number;
+  name: string;
 }
-
 
 // type item = {
 //   holidayPrice: number;
@@ -34,12 +33,13 @@ interface Item {
 
 export default function Home() {
   const baseUrl = useApi().baseUrl;
-  const { data } = useFetch(`${baseUrl}/rooms`);
-  if (Object.keys(data).length === 0) return(
-    <div className="w-full h-screen bg-second flex justify-center items-center">
-    <Loading />
-  </div>
-  );
+  const [ data ] = useFetch(`${baseUrl}/rooms`);
+  if (Object.keys(data).length === 0)
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-second">
+        <Loading />
+      </div>
+    );
   console.log(data);
 
   return (
