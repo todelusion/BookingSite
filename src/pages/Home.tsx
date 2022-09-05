@@ -1,3 +1,4 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper";
@@ -31,7 +32,7 @@ interface Item {
 //   normalDayPrice: number;
 // };
 
-export default function Home() {
+export default function Home() : JSX.Element{
   const obj = {
     key: "value",
   };
