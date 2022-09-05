@@ -33,7 +33,7 @@ interface Item {
 
 export default function Home() {
   const baseUrl = useApi().baseUrl;
-  const [ data ] = useFetch(`${baseUrl}/rooms`);
+  const [data] = useFetch(`${baseUrl}/rooms`);
   if (Object.keys(data).length === 0)
     return (
       <div className="flex h-screen w-full items-center justify-center bg-second">

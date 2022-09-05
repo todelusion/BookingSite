@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import eslintPlugin from 'vite-plugin-eslint'
 
 // import alias from '@rollup/plugin-alias'
 // import { resolve } from 'path'
@@ -10,6 +11,9 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [
     react(),
+    eslintPlugin({
+      include: ['src/**/*.js', 'src/**/*.vue', 'src/*.js', 'src/*.vue']
+    })
   ],
   base: '/RocketTeam-10th/'
 })
