@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
-import { useApi } from "../hooks/useApi";
-import useFetch from "../hooks/useFetch";
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
-import houseIcon from "../assets/houseIcon.svg";
+// eslint-disable-next-line import/no-extraneous-dependencies
 import styled from "@emotion/styled";
+import houseIcon from "../assets/houseIcon.svg";
 import Loading from "../components/Loading";
+import { useApi } from "../hooks/useApi";
+import useFetch from "../hooks/useFetch";
 
 interface Data {
   success?: boolean;
@@ -32,7 +32,12 @@ interface Item {
 // };
 
 export default function Home() {
-  const baseUrl = useApi().baseUrl;
+  const obj = {
+    key: "value",
+  };
+  console.log(obj);
+
+  const { baseUrl } = useApi();
   const [data] = useFetch(`${baseUrl}/rooms`);
   if (Object.keys(data).length === 0)
     return (
@@ -110,18 +115,11 @@ export default function Home() {
         autoplay={{ delay: 4000, disableOnInteraction: false }}
         className="pointer-events-auto absolute select-none"
       >
-        {data.items.map((item: Item) => {
-          return (
-            <SwiperSlide key={item.id}>
-              <img
-                src={item.imageUrl}
-                alt="banner"
-                width="1366"
-                className="brightness-50"
-              />
-            </SwiperSlide>
-          );
-        })}
+        {data.items.map((item: Item) => (
+          <SwiperSlide key={item.id}>
+            <img src={item.imageUrl} alt="banner" width="1366" className="brightness-50" />
+          </SwiperSlide>
+        ))}
       </Swiper>
     </div>
   );

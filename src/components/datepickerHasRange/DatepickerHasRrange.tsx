@@ -6,13 +6,13 @@ import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import "./react-date-range-custom.css";
 
-type Data = {
+interface Data {
   success?: boolean;
   room?: Room[];
   booking?: Booking[];
-};
+}
 
-type Room = {
+interface Room {
   id: string;
   imageUrl: string[];
   normalDayPrice: number;
@@ -22,8 +22,8 @@ type Room = {
   checkInAndOut: CheckInAndOut;
   amenities: { [key: string]: boolean };
   descriptionShort: DescriptionShort;
-};
-type CheckoutModal = {
+}
+interface CheckoutModal {
   toggleCheckout?: boolean;
   name?: string;
   tel?: string;
@@ -34,7 +34,7 @@ type CheckoutModal = {
     holiday: number;
     normalday: number;
   };
-};
+}
 interface Booking {
   name: string;
   tel: string;
@@ -54,29 +54,16 @@ interface DescriptionShort {
   Footage: number;
 }
 
-function DatepickerHasRrange({
-  data,
-  checkoutModal,
-  setCheckoutModal,
-}: Data | any) {
+function DatepickerHasRrange({ data, checkoutModal, setCheckoutModal }: Data | any) {
   // console.log(checkoutModal)
   const { startDate, endDate }: CheckoutModal = checkoutModal;
 
-  const handleDate = (item: {
-    selection: { startDate: Date; endDate: Date; key: string };
-  }) => {
+  const handleDate = (item: { selection: { startDate: Date; endDate: Date; key: string } }) => {
     const { startDate, endDate } = item.selection;
     startDate.setHours(0);
     // console.log({startDate, endDate})
-    const getDaysArray = function (
-      start: string | number | Date,
-      end: string | number | Date
-    ) {
-      for (
-        var arr = [], dt = new Date(start);
-        dt <= new Date(end);
-        dt.setDate(dt.getDate() + 1)
-      ) {
+    const getDaysArray = function (start: string | number | Date, end: string | number | Date) {
+      for (var arr = [], dt = new Date(start); dt <= new Date(end); dt.setDate(dt.getDate() + 1)) {
         arr.push(new Date(dt));
       }
       return arr;
@@ -105,41 +92,29 @@ function DatepickerHasRrange({
 
   // console.log('僅起點與終點，用於設定DateRangePicker的ranges props', state)
 
-  const onDateChange = (item: {
-    selection: { startDate: Date; endDate: Date; key: string };
-  }) => {
+  const onDateChange = (item: { selection: { startDate: Date; endDate: Date; key: string } }) => {
     // console.log('算出起終點內部天數', handleDate(item))
 
     const { startDate, endDate } = item.selection;
     const { dateList, dateType } = handleDate(item);
     // setState([item.selection])
-    setCheckoutModal((prevState: object) => {
-      return {
-        ...prevState,
-        date: dateList,
-        startDate: format(startDate, "Y-MM-dd"),
-        endDate: format(endDate, "Y-MM-dd"),
-        dateType: dateType,
-      };
-    });
+    setCheckoutModal((prevState: object) => ({
+      ...prevState,
+      date: dateList,
+      startDate: format(startDate, "Y-MM-dd"),
+      endDate: format(endDate, "Y-MM-dd"),
+      dateType,
+    }));
   };
 
-  //起始與終點內經過的天數
+  // 起始與終點內經過的天數
 
-  //移除sidebar白底
+  // 移除sidebar白底
   useEffect(() => {
     // console.log(document.getElementsByClassName('rdrDefinedRangesWrapper')[0].__proto__)
-    (
-      document.getElementsByClassName(
-        "rdrDefinedRangesWrapper"
-      )[0] as HTMLElement
-    ).style.display = "none";
-    (
-      document.getElementsByClassName("rdrDateDisplayWrapper")[0] as HTMLElement
-    ).style.display = "none";
-    [...(document.getElementsByClassName("rdrMonthName") as any)].forEach(
-      (div) => (div.style.display = "none")
-    );
+    (document.getElementsByClassName("rdrDefinedRangesWrapper")[0] as HTMLElement).style.display = "none";
+    (document.getElementsByClassName("rdrDateDisplayWrapper")[0] as HTMLElement).style.display = "none";
+    [...(document.getElementsByClassName("rdrMonthName") as any)].forEach((div) => (div.style.display = "none"));
 
     // if(checkoutModal){
     //   setState([{
@@ -169,9 +144,9 @@ function DatepickerHasRrange({
       ]}
       direction="horizontal"
       monthDisplayFormat="yyyy / M"
-      //關閉指定的日期
+      // 關閉指定的日期
       disabledDates={data.booking.map((item: Booking) => new Date(item.date))}
-      //移除sidebar內容
+      // 移除sidebar內容
       staticRanges={[]}
     />
   );

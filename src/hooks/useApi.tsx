@@ -1,12 +1,10 @@
 import { createContext, useContext } from "react";
 
-type api = {
+interface api {
   baseUrl: string;
   token?: string;
-};
+}
 
 export const ApiContext = createContext<api>({ baseUrl: "", token: "" });
 
-export const useApi = () => {
-  return useContext(ApiContext);
-};
+export const useApi = () => useContext(ApiContext);
