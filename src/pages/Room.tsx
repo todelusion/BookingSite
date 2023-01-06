@@ -27,7 +27,7 @@ import {
   Ok,
   ResultIcon,
   Success,
-  Error,
+  Error
 } from "../assets/icon/Icon";
 import { arrow } from "../assets/flow/Flow";
 
@@ -106,14 +106,13 @@ export default function Room() {
     date: [],
     dateType: {
       holiday: 0,
-      normalday: 0,
-    },
+      normalday: 0
+    }
   });
-
   const [isLoading, setIsLoading] = useLoading({
     isPending: false,
     isError: false,
-    isSuccess: false,
+    isSuccess: false
   });
   // console.log(isLoading)
 

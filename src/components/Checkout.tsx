@@ -18,7 +18,7 @@ import {
   Sofa,
   Smoke,
   PetFriendly,
-  GreatView,
+  GreatView
 } from "../assets/icon/Icon";
 import { flow1, flow2, flow3, arrow } from "../assets/flow/Flow";
 import Loading from "./Loading";
@@ -75,19 +75,19 @@ export default function Checkout({
   setCheckoutModal,
   isLoading,
   setIsLoading,
-  setData,
+  setData
 }: Data | any) {
   const [state, setState] = useState({
     startDate: new Date(),
     endDate: new Date(),
     toggleStartCalendar: false,
-    toggleEndCalendar: false,
+    toggleEndCalendar: false
   });
   const { register, watch, handleSubmit, formState } = useForm({
     defaultValues: {
       name: "",
-      tel: "",
-    },
+      tel: ""
+    }
   });
 
   const { baseUrl, token } = useApi();
@@ -156,14 +156,14 @@ export default function Checkout({
         ...prevState,
         startDate: format(item, "Y-MM-dd"),
         date: dateList,
-        dateType,
+        dateType
       }));
       startDateRef.current.value = format(item, "Y-MM-dd");
 
       setState((prevState) => ({
         ...prevState,
         startDate: item,
-        toggleStartCalendar: false,
+        toggleStartCalendar: false
       }));
     }
 
@@ -177,7 +177,7 @@ export default function Checkout({
         ...prevState,
         endDate: format(item, "Y-MM-dd"),
         date: dateList,
-        dateType,
+        dateType
       }));
       endDateRef.current.value = format(item, "Y-MM-dd");
 
@@ -185,7 +185,7 @@ export default function Checkout({
       setState((prevState) => ({
         ...prevState,
         endDate: item,
-        toggleEndCalendar: false,
+        toggleEndCalendar: false
       }));
     }
   };
@@ -218,13 +218,13 @@ export default function Checkout({
       return;
     }
     const config = {
-      headers: { Authorization: token as string },
+      headers: { Authorization: token as string }
     };
     // console.log(config)
     const obj = {
       name: inputData.name,
       tel: inputData.tel,
-      date,
+      date
     };
 
     setIsLoading("isPending", true);
@@ -256,7 +256,7 @@ export default function Checkout({
       <div className="flex border-2 border-primary">
         <section className="flex w-full max-w-md flex-col bg-primary px-16 pt-12 pb-7">
           <form
-            onSubmit={handleSubmit(async (data) => onSubmit(data))}
+            onSubmit={() => handleSubmit(async (data): Promise<void> => onSubmit(data))}
             className="w-full max-w-xs font-light text-white"
           >
             <label>
